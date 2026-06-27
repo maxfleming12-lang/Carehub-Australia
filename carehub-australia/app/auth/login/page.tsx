@@ -6,6 +6,8 @@ import { Eye, EyeOff, Heart, ArrowRight } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Card, CardContent } from '@/components/ui/card'
+import { createBrowserClient } from '@supabase/ssr'
+import type { Database } from '@/types/database'
 
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false)
@@ -17,9 +19,23 @@ export default function LoginPage() {
     e.preventDefault()
     setLoading(true)
     setError('')
-    // In production: call Supabase auth API
-    await new Promise((r) => setTimeout(r, 1200))
-    setLoading(false)
+
+    const supabase = createBrowserClient<Database>(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+    )
+
+    const { error: signInError } = await supabase.auth.signInWithPassword({
+      email: formData.email,
+      password: formData.password,
+    })
+
+    if (signInError) {
+      setError(signInError.message)
+      setLoading(false)
+      return
+    }
+
     window.location.href = '/dashboard'
   }
 
@@ -89,13 +105,6 @@ export default function LoginPage() {
                     {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                   </button>
                 </div>
-              </div>
-
-              <div className="flex items-center gap-2">
-                <input type="checkbox" id="remember" className="rounded" />
-                <label htmlFor="remember" className="text-sm text-gray-600">
-                  Remember me for 30 days
-                </label>
               </div>
 
               <Button
