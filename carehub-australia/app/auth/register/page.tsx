@@ -6,6 +6,8 @@ import { Eye, EyeOff, Heart, CheckCircle, ArrowRight } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Card, CardContent } from '@/components/ui/card'
+import { createBrowserClient } from '@supabase/ssr'
+import type { Database } from '@/types/database'
 
 const benefits = [
   '14-day free Professional trial',
@@ -13,12 +15,14 @@ const benefits = [
   'Cancel anytime',
   'NDIS compliant tools',
   'Australian data storage',
-  'Cancel anytime',
+  'Priority email support',
 ]
 
 export default function RegisterPage() {
   const [showPassword, setShowPassword] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
+  const [success, setSuccess] = useState(false)
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
@@ -31,10 +35,48 @@ export default function RegisterPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
-    // In production: call Supabase auth API
-    await new Promise((r) => setTimeout(r, 1500))
-    setLoading(false)
-    window.location.href = '/dashboard'
+    setError('')
+
+    const supabase = createBrowserClient<Database>(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!
+    )
+
+    const { data, error: signUpError } = await supabase.auth.signUp({
+      email: formData.email,
+      password: formData.password,
+      options: {
+        data: {
+          full_name: formData.fullName,
+        },
+      },
+    })
+
+    if (signUpError) {
+      setError(signUpError.message)
+      setLoading(false)
+      return
+    }
+
+    // Save extra profile fields — the DB trigger already created the base profile
+    if (data.user) {
+      await supabase
+        .from('profiles')
+        .update({
+          organization: formData.organisation || null,
+          state: formData.state || null,
+        })
+        .eq('id', data.user.id)
+    }
+
+    // If email confirmation is disabled in Supabase, redirect immediately
+    if (data.session) {
+      window.location.href = '/dashboard'
+    } else {
+      // Email confirmation required — show success message
+      setSuccess(true)
+      setLoading(false)
+    }
   }
 
   return (
@@ -96,6 +138,21 @@ export default function RegisterPage() {
                 <p className="text-sm text-gray-500 mt-1">14-day Professional trial included</p>
               </div>
 
+              {success ? (
+                <div className="rounded-xl bg-teal-50 border border-teal-200 p-5 text-center">
+                  <CheckCircle className="h-8 w-8 text-teal-500 mx-auto mb-2" />
+                  <p className="font-semibold text-teal-800">Check your email</p>
+                  <p className="text-sm text-teal-700 mt-1">
+                    We sent a confirmation link to <strong>{formData.email}</strong>. Click it to activate your account.
+                  </p>
+                </div>
+              ) : (
+              <>
+              {error && (
+                <div className="mb-4 rounded-lg bg-red-50 border border-red-200 p-3 text-sm text-red-700">
+                  {error}
+                </div>
+              )}
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
                   <label className="text-sm font-medium text-gray-700 block mb-1.5">
@@ -241,6 +298,8 @@ export default function RegisterPage() {
                   🔒 256-bit SSL encryption · Australian data storage · ISO 27001 certified
                 </p>
               </div>
+              </>
+              )}
             </CardContent>
           </Card>
         </div>

@@ -4,6 +4,7 @@ import { Users, FileText, TrendingUp, DollarSign, Activity, ArrowRight, Settings
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
+import { requireAdmin } from '@/lib/admin'
 
 export const metadata: Metadata = {
   title: 'Admin Dashboard',
@@ -39,7 +40,9 @@ const adminNav = [
   { label: 'Settings', href: '/admin/settings', icon: Settings, desc: 'Platform configuration' },
 ]
 
-export default function AdminDashboard() {
+export default async function AdminDashboard() {
+  const { profile } = await requireAdmin()
+
   return (
     <div className="pt-16 min-h-screen bg-gray-50">
       {/* Header */}
@@ -54,8 +57,8 @@ export default function AdminDashboard() {
               <p className="text-gray-400 text-sm">CareHub Australia · Platform Overview</p>
             </div>
             <div className="text-right text-sm text-gray-400">
-              <div>Last updated: Just now</div>
-              <div>27 June 2026</div>
+              <div className="text-white font-medium">{profile.full_name || profile.email}</div>
+              <div>Administrator</div>
             </div>
           </div>
         </div>
