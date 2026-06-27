@@ -23,36 +23,40 @@ export async function POST(request: NextRequest) {
     // Check usage limits
     const { data: profile } = await supabase
       .from('profiles')
-      .select('subscription_tier')
+      .select('subscription_tier, role')
       .eq('id', user.id)
       .single()
 
-    const limits: Record<string, number> = {
-      free: 3,
-      starter: 10,
-      professional: Infinity,
-      enterprise: Infinity,
-    }
+    const isAdmin = profile?.role === 'admin'
 
-    const tier = profile?.subscription_tier || 'free'
-    const limit = limits[tier] || 3
+    if (!isAdmin) {
+      const limits: Record<string, number> = {
+        free: 3,
+        starter: 10,
+        professional: Infinity,
+        enterprise: Infinity,
+      }
 
-    if (limit !== Infinity) {
-      const startOfMonth = new Date()
-      startOfMonth.setDate(1)
-      startOfMonth.setHours(0, 0, 0, 0)
+      const tier = profile?.subscription_tier || 'free'
+      const limit = limits[tier] || 3
 
-      const { count } = await supabase
-        .from('shift_notes')
-        .select('*', { count: 'exact', head: true })
-        .eq('user_id', user.id)
-        .gte('created_at', startOfMonth.toISOString())
+      if (limit !== Infinity) {
+        const startOfMonth = new Date()
+        startOfMonth.setDate(1)
+        startOfMonth.setHours(0, 0, 0, 0)
 
-      if ((count || 0) >= limit) {
-        return NextResponse.json(
-          { error: `Monthly shift note limit reached (${limit}). Please upgrade your plan.` },
-          { status: 429 }
-        )
+        const { count } = await supabase
+          .from('shift_notes')
+          .select('*', { count: 'exact', head: true })
+          .eq('user_id', user.id)
+          .gte('created_at', startOfMonth.toISOString())
+
+        if ((count || 0) >= limit) {
+          return NextResponse.json(
+            { error: `Monthly shift note limit reached (${limit}). Please upgrade your plan.` },
+            { status: 429 }
+          )
+        }
       }
     }
 

@@ -92,36 +92,39 @@ export async function POST(request: NextRequest) {
     // Check usage limits based on subscription
     const { data: profile } = await supabase
       .from('profiles')
-      .select('subscription_tier, subscription_status')
+      .select('subscription_tier, subscription_status, role')
       .eq('id', user.id)
       .single()
 
-    const limits: Record<string, number> = {
-      free: 1,
-      starter: 5,
-      professional: 50,
-      enterprise: Infinity,
-    }
+    const isAdmin = profile?.role === 'admin'
 
-    const tier = profile?.subscription_tier || 'free'
-    const limit = limits[tier] || 1
+    if (!isAdmin) {
+      const limits: Record<string, number> = {
+        free: 1,
+        starter: 5,
+        professional: 50,
+        enterprise: Infinity,
+      }
 
-    // Count this month's documents
-    const startOfMonth = new Date()
-    startOfMonth.setDate(1)
-    startOfMonth.setHours(0, 0, 0, 0)
+      const tier = profile?.subscription_tier || 'free'
+      const limit = limits[tier] || 1
 
-    const { count } = await supabase
-      .from('generated_documents')
-      .select('*', { count: 'exact', head: true })
-      .eq('user_id', user.id)
-      .gte('created_at', startOfMonth.toISOString())
+      const startOfMonth = new Date()
+      startOfMonth.setDate(1)
+      startOfMonth.setHours(0, 0, 0, 0)
 
-    if ((count || 0) >= limit) {
-      return NextResponse.json(
-        { error: `Monthly document limit reached (${limit}). Please upgrade your plan.` },
-        { status: 429 }
-      )
+      const { count } = await supabase
+        .from('generated_documents')
+        .select('*', { count: 'exact', head: true })
+        .eq('user_id', user.id)
+        .gte('created_at', startOfMonth.toISOString())
+
+      if ((count || 0) >= limit) {
+        return NextResponse.json(
+          { error: `Monthly document limit reached (${limit}). Please upgrade your plan.` },
+          { status: 429 }
+        )
+      }
     }
 
     // Generate document with OpenAI
