@@ -13,7 +13,7 @@ const benefits = [
   'Cancel anytime',
   'NDIS compliant tools',
   'Australian data storage',
-  'Cancel anytime',
+  'Priority email support',
 ]
 
 export default function RegisterPage() {
