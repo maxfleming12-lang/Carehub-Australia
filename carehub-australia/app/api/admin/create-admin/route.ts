@@ -11,6 +11,7 @@ import { createSupabaseAdminClient } from '@/lib/supabase-server'
  */
 export async function POST(request: NextRequest) {
   const setupSecret = process.env.ADMIN_SETUP_SECRET
+
   if (!setupSecret) {
     return NextResponse.json(
       { error: 'ADMIN_SETUP_SECRET is not set in environment variables.' },
