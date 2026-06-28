@@ -1,12 +1,13 @@
 'use client'
 
-import { useState } from 'react'
+/// <reference types="react" />
+import { useState, type FormEvent } from 'react'
 import Link from 'next/link'
 import { Eye, EyeOff, Heart, ArrowRight } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Card, CardContent } from '@/components/ui/card'
-import { createBrowserClient } from '@supabase/ssr'
+import { createBrowserSupabaseClient } from '@supabase/auth-helpers-nextjs'
 import type { Database } from '@/types/database'
 
 export default function LoginPage() {
@@ -15,12 +16,12 @@ export default function LoginPage() {
   const [formData, setFormData] = useState({ email: '', password: '' })
   const [error, setError] = useState('')
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setLoading(true)
     setError('')
 
-    const supabase = createBrowserClient<Database>(
+    const supabase = createBrowserSupabaseClient<Database>(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
       process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!
     )
