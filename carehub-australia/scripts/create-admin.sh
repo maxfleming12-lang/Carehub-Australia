@@ -6,24 +6,24 @@ set -euo pipefail
 
 BASE_URL=${1:-http://localhost:3000}
 
-read -s -p "ADMIN_SETUP_SECRET: " sb_secret_FVF3tGDfMQdeSJcpPQ5zlQ_8beF2Sv2
+read -s -p "ADMIN_SETUP_SECRET: " SECRET
 echo
-read -p "Admin email: " maxfleming12@gmail.com
-read -p "Admin full name: " Maxwell Fleming
-read -s -p "Admin password (will not be shown): " 1388Majf!
+read -p "Admin email: " EMAIL
+read -p "Admin full name: " FULLNAME
+read -s -p "Admin password (will not be shown): " PASSWORD
 echo
 
 BODY=$(cat <<EOF
 {
-  "secret": "${sb_secret_FVF3tGDfMQdeSJcpPQ5zlQ_8beF2Sv2}",
-  "email": "${maxfleming12@gmail.com}",
-  "password": "${1388Majf!}",
-  "fullName": "${Maxwell Fleming}"
+  "secret": "${SECRET}",
+  "email": "${EMAIL}",
+  "password": "${PASSWORD}",
+  "fullName": "${FULLNAME}"
 }
 EOF
 )
 
-echo "Creating admin account for ${maxfleming12@gmail.com}..."
+echo "Creating admin account for ${EMAIL}..."
 
 curl --fail --silent --show-error -X POST "${BASE_URL}/api/admin/create-admin" \
   -H "Content-Type: application/json" \
