@@ -34,3 +34,34 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+## One-time admin setup
+
+This project includes a one-time endpoint to create the initial admin account: `POST /api/admin/create-admin`.
+
+- Add the setup secret to your local environment (do not commit):
+
+```bash
+# at project root
+echo "ADMIN_SETUP_SECRET=$(openssl rand -hex 32)" >> .env.local
+```
+
+- Start your dev server and run the helper script (or use `curl`). The helper prompts for the secret and admin details:
+
+```bash
+chmod +x scripts/create-admin.sh
+./scripts/create-admin.sh http://localhost:3000
+```
+
+- Or call the endpoint directly:
+
+```bash
+curl -X POST http://localhost:3000/api/admin/create-admin \
+	-H "Content-Type: application/json" \
+	-d '{"secret":"<your_secret>","email":"admin@example.com","password":"s3cureP@ss","fullName":"Admin User"}'
+```
+
+Security notes:
+- Ensure `.env.local` is listed in `.gitignore` and never commit secrets.
+- After creating the admin account, delete or disable `app/api/admin/create-admin/route.ts` or unset `ADMIN_SETUP_SECRET` in production.
+
