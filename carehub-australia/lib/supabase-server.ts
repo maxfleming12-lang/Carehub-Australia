@@ -27,8 +27,10 @@ export async function createSupabaseServerClient() {
   )
 }
 
-export function createSupabaseAdminClient(supabaseUrl: string, serviceRoleKey: string) {
-  return createClient<Database>(supabaseUrl, serviceRoleKey, {
-    auth: { autoRefreshToken: false, persistSession: false },
-  })
+export function createSupabaseAdminClient() {
+  return createClient<Database>(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!,
+    { auth: { autoRefreshToken: false, persistSession: false } }
+  )
 }

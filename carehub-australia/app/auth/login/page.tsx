@@ -1,13 +1,12 @@
 'use client'
 
-/// <reference types="react" />
-import { useState, type FormEvent } from 'react'
+import { useState } from 'react'
 import Link from 'next/link'
 import { Eye, EyeOff, Heart, ArrowRight } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Card, CardContent } from '@/components/ui/card'
-import { createBrowserSupabaseClient } from '@supabase/auth-helpers-nextjs'
+import { createBrowserClient } from '@supabase/ssr'
 import type { Database } from '@/types/database'
 
 export default function LoginPage() {
@@ -16,12 +15,12 @@ export default function LoginPage() {
   const [formData, setFormData] = useState({ email: '', password: '' })
   const [error, setError] = useState('')
 
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
     setError('')
 
-    const supabase = createBrowserSupabaseClient<Database>(
+    const supabase = createBrowserClient<Database>(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
       process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!
     )
@@ -49,7 +48,7 @@ export default function LoginPage() {
             <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/20">
               <Heart className="h-5 w-5 text-white" />
             </div>
-            <span className="text-xl font-bold text-white">CareHub Australia</span>
+            <span className="text-xl font-bold text-white">Scribe & Thrive Australia</span>
           </Link>
         </div>
 
@@ -57,7 +56,7 @@ export default function LoginPage() {
           <CardContent className="p-8">
             <div className="text-center mb-6">
               <h1 className="text-2xl font-bold text-gray-900">Welcome Back</h1>
-              <p className="text-sm text-gray-500 mt-1">Sign in to your CareHub account</p>
+              <p className="text-sm text-gray-500 mt-1">Sign in to your Scribe & Thrive account</p>
             </div>
 
             {error && (

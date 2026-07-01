@@ -12,8 +12,8 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: {
-    default: "CareHub Australia | Professional Care Management Platform",
-    template: "%s | CareHub Australia",
+    default: "Scribe & Thrive Australia | Professional Care Management Platform",
+    template: "%s | Scribe & Thrive Australia",
   },
   description:
     "The comprehensive SaaS platform for Australian care workers, disability support professionals, and aged care organisations. AI-powered tools, training, and resources.",
@@ -28,21 +28,21 @@ export const metadata: Metadata = {
     "care plans",
     "burnout assessment",
   ],
-  authors: [{ name: "CareHub Australia" }],
+  authors: [{ name: "Scribe & Thrive Australia" }],
   metadataBase: new URL(
-    process.env.NEXT_PUBLIC_APP_URL || "https://carehub.com.au"
+    process.env.NEXT_PUBLIC_APP_URL || "https://sataus.net"
   ),
   openGraph: {
     type: "website",
     locale: "en_AU",
-    siteName: "CareHub Australia",
-    title: "CareHub Australia | Professional Care Management Platform",
+    siteName: "Scribe & Thrive Australia",
+    title: "Scribe & Thrive Australia | Professional Care Management Platform",
     description:
       "AI-powered tools for Australian care workers. Shift notes, care plans, burnout assessments, training courses and more.",
   },
   twitter: {
     card: "summary_large_image",
-    title: "CareHub Australia | Professional Care Management Platform",
+    title: "Scribe & Thrive Australia | Professional Care Management Platform",
     description:
       "AI-powered tools for Australian care workers. Join thousands of professionals today.",
   },

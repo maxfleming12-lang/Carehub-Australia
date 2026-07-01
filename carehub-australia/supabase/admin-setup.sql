@@ -1,5 +1,5 @@
 -- =============================================================
--- CareHub Australia — Admin Account Setup
+-- Scribe & Thrive Australia — Admin Account Setup
 -- =============================================================
 -- Run this in the Supabase SQL Editor AFTER creating your account
 -- through the regular registration flow (or via Supabase Auth dashboard).

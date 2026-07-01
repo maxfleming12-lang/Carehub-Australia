@@ -47,7 +47,7 @@ export function Footer() {
             Supporting Australia&apos;s Carers, Every Step of the Way
           </h2>
           <p className="text-teal-100 mb-6 max-w-xl mx-auto">
-            Join thousands of carers and care organisations using CareHub Australia to deliver better outcomes.
+            Join thousands of carers and care organisations using Scribe & Thrive Australia to deliver better outcomes.
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <Link
@@ -76,7 +76,7 @@ export function Footer() {
                 <Heart className="h-5 w-5 text-white" />
               </div>
               <div>
-                <div className="text-lg font-bold text-white">CareHub Australia</div>
+                <div className="text-lg font-bold text-white">Scribe & Thrive Australia</div>
               </div>
             </Link>
             <p className="text-sm text-gray-400 leading-relaxed mb-6 max-w-xs">
@@ -85,11 +85,11 @@ export function Footer() {
             <div className="space-y-2 text-sm">
               <div className="flex items-center gap-2">
                 <Phone className="h-4 w-4 text-teal-400 flex-shrink-0" />
-                <span>1800 CARE HUB</span>
+                <span>0451 381 843</span>
               </div>
               <div className="flex items-center gap-2">
                 <Mail className="h-4 w-4 text-teal-400 flex-shrink-0" />
-                <span>hello@carehub.com.au</span>
+                <span>hello@sataus.net</span>
               </div>
               <div className="flex items-center gap-2">
                 <MapPin className="h-4 w-4 text-teal-400 flex-shrink-0" />
@@ -165,7 +165,7 @@ export function Footer() {
         </div>
 
         <div className="mt-12 pt-8 border-t border-gray-800 flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-gray-500">
-          <p>© {new Date().getFullYear()} CareHub Australia Pty Ltd. All rights reserved. ABN 12 345 678 901</p>
+          <p>© {new Date().getFullYear()} Scribe & Thrive Australia Pty Ltd. All rights reserved. ABN 88 790 271 132</p>
           <p className="flex items-center gap-1">
             Built with <Heart className="h-4 w-4 text-red-500" /> for Australia&apos;s care community
           </p>
