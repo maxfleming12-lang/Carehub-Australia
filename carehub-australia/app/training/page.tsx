@@ -253,7 +253,7 @@ export default function TrainingPage() {
       <section className="py-16 bg-white">
         <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
           <h2 className="text-2xl font-bold text-gray-900 mb-10 text-center">
-            Why Train with CareHub Australia?
+            Why Train with Scribe & Thrive Australia?
           </h2>
           <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-6">
             {[

@@ -311,7 +311,7 @@ export default function PricingPage() {
           <div className="text-4xl mb-4">🛡️</div>
           <h3 className="text-xl font-bold text-gray-900 mb-2">30-Day Money-Back Guarantee</h3>
           <p className="text-gray-600">
-            Not satisfied? We&apos;ll refund your first month&apos;s payment, no questions asked. We&apos;re that confident you&apos;ll love CareHub Australia.
+            Not satisfied? We&apos;ll refund your first month&apos;s payment, no questions asked. We&apos;re that confident you&apos;ll love Scribe & Thrive Australia.
           </p>
         </div>
       </section>
