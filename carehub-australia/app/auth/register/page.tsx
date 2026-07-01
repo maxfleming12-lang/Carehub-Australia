@@ -90,7 +90,7 @@ export default function RegisterPage() {
                 <Heart className="h-5 w-5 text-white" />
               </div>
               <div>
-                <div className="font-bold text-lg">CareHub Australia</div>
+                <div className="font-bold text-lg">Scribe & Thrive Australia</div>
               </div>
             </Link>
 
@@ -98,7 +98,7 @@ export default function RegisterPage() {
               Join Australia&apos;s Largest Care Community
             </h2>
             <p className="text-gray-300 mb-8 leading-relaxed">
-              Over 12,000 care professionals trust CareHub to save time, stay compliant, and deliver better outcomes.
+              Over 12,000 care professionals trust Scribe & Thrive to save time, stay compliant, and deliver better outcomes.
             </p>
 
             <ul className="space-y-3">
@@ -132,7 +132,7 @@ export default function RegisterPage() {
                   <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-teal-600 to-blue-600">
                     <Heart className="h-5 w-5 text-white" />
                   </div>
-                  <span className="text-lg font-bold text-gray-900">CareHub Australia</span>
+                  <span className="text-lg font-bold text-gray-900">Scribe & Thrive Australia</span>
                 </div>
                 <h1 className="text-2xl font-bold text-gray-900">Create Your Free Account</h1>
                 <p className="text-sm text-gray-500 mt-1">14-day Professional trial included</p>

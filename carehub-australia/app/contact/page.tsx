@@ -8,22 +8,22 @@ import { Input } from '@/components/ui/input'
 export const metadata: Metadata = {
   title: 'Contact Us',
   description:
-    'Get in touch with the CareHub Australia team. We\'re here to help care professionals across Australia.',
+    'Get in touch with the Scribe & Thrive Australia team. We\'re here to help care professionals across Australia.',
 }
 
 const contactMethods = [
   {
     icon: Phone,
     label: 'Phone',
-    value: '1800 CARE HUB',
-    subvalue: '1800 227 348',
+    value: '0451 381 843',
+    subvalue: '',
     desc: 'Mon–Fri, 8am–6pm AEST',
     color: 'bg-teal-50 text-teal-600',
   },
   {
     icon: Mail,
     label: 'Email',
-    value: 'hello@carehub.com.au',
+    value: 'hello@sataus.net',
     subvalue: '',
     desc: 'Usually replies within 4 hours',
     color: 'bg-blue-50 text-blue-600',
@@ -38,10 +38,10 @@ const contactMethods = [
   },
   {
     icon: MapPin,
-    label: 'Address',
-    value: 'Level 12, 100 Market St',
-    subvalue: 'Sydney NSW 2000',
-    desc: 'Visitors by appointment',
+    label: 'Location',
+    value: 'Australia-wide',
+    subvalue: '',
+    desc: 'Remote-first, serving all states',
     color: 'bg-orange-50 text-orange-600',
   },
 ]
@@ -59,7 +59,7 @@ export default function ContactPage() {
             We&apos;re Here to Help
           </h1>
           <p className="text-xl text-gray-300 max-w-2xl mx-auto">
-            Our Australian-based team is ready to answer your questions and help you get the most out of CareHub Australia.
+            Our Australian-based team is ready to answer your questions and help you get the most out of Scribe & Thrive Australia.
           </p>
         </div>
       </section>
@@ -149,7 +149,7 @@ export default function ContactPage() {
               <div className="space-y-4">
                 {[
                   {
-                    q: 'How do I get started with CareHub?',
+                    q: 'How do I get started with Scribe & Thrive?',
                     a: 'Simply create a free account on our website. No credit card required. You\'ll get instant access to free features and a 14-day trial of our Professional plan.',
                   },
                   {
@@ -166,7 +166,7 @@ export default function ContactPage() {
                   },
                   {
                     q: 'What states do you operate in?',
-                    a: 'CareHub Australia operates across all Australian states and territories. Our content is tailored to Australian regulations including NDIS and Aged Care standards.',
+                    a: 'Scribe & Thrive Australia operates across all Australian states and territories. Our content is tailored to Australian regulations including NDIS and Aged Care standards.',
                   },
                 ].map((item) => (
                   <div key={item.q} className="rounded-xl border border-gray-200 p-5">

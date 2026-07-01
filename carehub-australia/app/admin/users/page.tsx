@@ -10,7 +10,7 @@ import UserSearchBar from './UserSearchBar'
 
 export const metadata: Metadata = {
   title: 'User Management · Admin',
-  description: 'View and manage CareHub Australia user accounts.',
+  description: 'View and manage Scribe & Thrive Australia user accounts.',
 }
 
 const tierColour: Record<string, string> = {

@@ -1,4 +1,4 @@
--- CareHub Australia - Complete Database Schema
+-- Scribe & Thrive Australia - Complete Database Schema
 -- Run this in your Supabase SQL editor
 
 -- Enable UUID extension

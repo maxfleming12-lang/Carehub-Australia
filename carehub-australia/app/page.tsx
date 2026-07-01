@@ -88,7 +88,7 @@ const testimonials = [
     name: 'Sarah Mitchell',
     role: 'Support Worker, Melbourne',
     quote:
-      "CareHub has completely transformed how I write shift notes. What used to take me 20 minutes now takes 3. The AI understands NDIS language perfectly.",
+      "Scribe & Thrive has completely transformed how I write shift notes. What used to take me 20 minutes now takes 3. The AI understands NDIS language perfectly.",
     rating: 5,
     avatar: 'SM',
   },
@@ -626,7 +626,7 @@ export default function HomePage() {
             Ready to Transform Your Care Practice?
           </h2>
           <p className="text-xl text-teal-100 mb-8">
-            Join 12,000+ Australian care professionals who trust CareHub to make their work easier, faster, and more compliant.
+            Join 12,000+ Australian care professionals who trust Scribe & Thrive to make their work easier, faster, and more compliant.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link href="/auth/register">

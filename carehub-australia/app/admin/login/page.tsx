@@ -85,7 +85,7 @@ function AdminLoginForm() {
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            placeholder="admin@carehub.com.au"
+            placeholder="admin@sataus.net"
             required
             autoComplete="email"
             className="bg-gray-800 border-gray-700 text-white placeholder:text-gray-600 focus:border-red-500"
@@ -146,7 +146,7 @@ export default function AdminLoginPage() {
             <Shield className="h-7 w-7 text-red-400" />
           </div>
           <h1 className="text-xl font-bold text-white">Admin Access</h1>
-          <p className="text-sm text-gray-500 mt-1">CareHub Australia · Restricted Area</p>
+          <p className="text-sm text-gray-500 mt-1">Scribe & Thrive Australia · Restricted Area</p>
         </div>
 
         <Suspense fallback={<div className="bg-gray-900 border border-gray-800 rounded-2xl p-8 h-48 animate-pulse" />}>

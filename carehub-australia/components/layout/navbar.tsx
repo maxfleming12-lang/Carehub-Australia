@@ -52,7 +52,7 @@ export function Navbar() {
               <Heart className="h-5 w-5 text-white" />
             </div>
             <div className="flex flex-col leading-none">
-              <span className="text-lg font-bold text-gray-900">CareHub</span>
+              <span className="text-lg font-bold text-gray-900">Scribe & Thrive</span>
               <span className="text-xs text-teal-600 font-medium">Australia</span>
             </div>
           </Link>

@@ -58,8 +58,8 @@ const posts = [
     category: 'Technology',
     readTime: '7 min read',
     date: '1 June 2026',
-    author: 'CareHub Team',
-    authorRole: 'CareHub Australia',
+    author: 'Scribe & Thrive Team',
+    authorRole: 'Scribe & Thrive Australia',
     featured: false,
     image: '🤖',
   },
@@ -115,7 +115,7 @@ export default function BlogPage() {
             Care Insights
           </Badge>
           <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
-            The CareHub Blog
+            The Scribe & Thrive Blog
           </h1>
           <p className="text-xl text-gray-300 max-w-2xl mx-auto">
             Practical insights, NDIS updates, wellbeing strategies, and best practices for Australian care professionals.

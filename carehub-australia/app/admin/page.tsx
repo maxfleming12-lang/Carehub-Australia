@@ -8,7 +8,7 @@ import { requireAdmin } from '@/lib/admin'
 
 export const metadata: Metadata = {
   title: 'Admin Dashboard',
-  description: 'CareHub Australia administration dashboard.',
+  description: 'Scribe & Thrive Australia administration dashboard.',
 }
 
 const adminStats = [
@@ -54,7 +54,7 @@ export default async function AdminDashboard() {
                 <Badge className="bg-red-500/20 text-red-300 border-red-500/30 text-xs">Admin Access</Badge>
               </div>
               <h1 className="text-2xl font-bold">Admin Dashboard</h1>
-              <p className="text-gray-400 text-sm">CareHub Australia · Platform Overview</p>
+              <p className="text-gray-400 text-sm">Scribe & Thrive Australia · Platform Overview</p>
             </div>
             <div className="text-right text-sm text-gray-400">
               <div className="text-white font-medium">{profile.full_name || profile.email}</div>

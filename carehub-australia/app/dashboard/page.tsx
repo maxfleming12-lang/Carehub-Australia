@@ -18,7 +18,7 @@ import { Button } from '@/components/ui/button'
 
 export const metadata: Metadata = {
   title: 'Dashboard',
-  description: 'Your CareHub Australia member dashboard.',
+  description: 'Your Scribe & Thrive Australia member dashboard.',
 }
 
 const quickActions = [
@@ -56,7 +56,7 @@ export default function DashboardPage() {
           <div className="flex items-center justify-between">
             <div>
               <h1 className="text-2xl font-bold text-gray-900">Good morning, Jane! 👋</h1>
-              <p className="text-gray-500 text-sm mt-0.5">Here&apos;s your CareHub overview</p>
+              <p className="text-gray-500 text-sm mt-0.5">Here&apos;s your Scribe & Thrive overview</p>
             </div>
             <div className="flex items-center gap-3">
               <button className="relative p-2 rounded-lg hover:bg-gray-100 transition-colors">
