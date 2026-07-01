@@ -126,15 +126,10 @@ const tierLabel: Record<string, { label: string; class: string }> = {
 export default function TrainingPage() {
   return (
     <div className="pt-16">
-      {/* Header */}
       <section className="bg-gradient-to-br from-gray-900 to-blue-900 py-20">
         <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 text-center">
-          <Badge className="mb-4 bg-blue-500/20 text-blue-300 border-blue-500/30">
-            CPD Certified
-          </Badge>
-          <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
-            Professional Training Courses
-          </h1>
+          <Badge className="mb-4 bg-blue-500/20 text-blue-300 border-blue-500/30">CPD Certified</Badge>
+          <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">Professional Training Courses</h1>
           <p className="text-xl text-gray-300 max-w-2xl mx-auto">
             Advance your skills with accredited courses designed for Australian care professionals. Earn certificates of completion for your CPD portfolio.
           </p>
@@ -154,7 +149,6 @@ export default function TrainingPage() {
         </div>
       </section>
 
-      {/* Courses Grid */}
       <section className="py-16 bg-gray-50">
         <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -175,59 +169,35 @@ export default function TrainingPage() {
                         </span>
                       </div>
                     </div>
-
                     <h2 className="font-bold text-gray-900 mb-2 leading-snug">{course.title}</h2>
                     <p className="text-sm text-gray-500 leading-relaxed mb-4 line-clamp-3">{course.description}</p>
-
                     <div className="flex flex-wrap gap-3 text-xs text-gray-400 mb-3">
-                      <div className="flex items-center gap-1">
-                        <Clock className="h-3.5 w-3.5" />
-                        {course.duration}
-                      </div>
-                      <div className="flex items-center gap-1">
-                        <BookOpen className="h-3.5 w-3.5" />
-                        {course.modules} modules
-                      </div>
-                      <div className="flex items-center gap-1">
-                        <Users className="h-3.5 w-3.5" />
-                        {course.enrolled.toLocaleString()}
-                      </div>
+                      <div className="flex items-center gap-1"><Clock className="h-3.5 w-3.5" />{course.duration}</div>
+                      <div className="flex items-center gap-1"><BookOpen className="h-3.5 w-3.5" />{course.modules} modules</div>
+                      <div className="flex items-center gap-1"><Users className="h-3.5 w-3.5" />{course.enrolled.toLocaleString()}</div>
                     </div>
-
                     <div className="flex items-center gap-2 mb-4">
                       <div className="flex">
                         {[1, 2, 3, 4, 5].map((i) => (
-                          <Star
-                            key={i}
-                            className={`h-3.5 w-3.5 ${i <= Math.round(course.rating) ? 'fill-yellow-400 text-yellow-400' : 'text-gray-200 fill-gray-200'}`}
-                          />
+                          <Star key={i} className={`h-3.5 w-3.5 ${i <= Math.round(course.rating) ? 'fill-yellow-400 text-yellow-400' : 'text-gray-200 fill-gray-200'}`} />
                         ))}
                       </div>
-                      <span className="text-xs text-gray-500">
-                        {course.rating} ({course.reviews} reviews)
-                      </span>
+                      <span className="text-xs text-gray-500">{course.rating} ({course.reviews} reviews)</span>
                     </div>
-
                     {course.certificate && (
                       <div className="flex items-center gap-1.5 text-xs text-teal-600 mb-4">
                         <Award className="h-3.5 w-3.5" />
                         Certificate of completion included
                       </div>
                     )}
-
                     <div className="flex flex-wrap gap-1 mb-4">
                       {course.topics.slice(0, 3).map((topic) => (
-                        <Badge key={topic} variant="outline" className="text-xs py-0">
-                          {topic}
-                        </Badge>
+                        <Badge key={topic} variant="outline" className="text-xs py-0">{topic}</Badge>
                       ))}
                       {course.topics.length > 3 && (
-                        <Badge variant="outline" className="text-xs py-0">
-                          +{course.topics.length - 3} more
-                        </Badge>
+                        <Badge variant="outline" className="text-xs py-0">+{course.topics.length - 3} more</Badge>
                       )}
                     </div>
-
                     {isLocked ? (
                       <Button variant="outline" size="sm" className="w-full">
                         <Lock className="h-3.5 w-3.5" />
@@ -249,92 +219,6 @@ export default function TrainingPage() {
         </div>
       </section>
 
-      {/* Benefits section */}
-      <section className="py-16 bg-white">
-        <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
-          <h2 className="text-2xl font-bold text-gray-900 mb-10 text-center">
-            Why Train with Scribe & Thrive Australia?
-          </h2>
-          <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-6">
-            {[
-              { icon: '🏆', title: 'CPD Accredited', desc: 'Courses count towards your Continuing Professional Development requirements.' },
-              { icon: '📱', title: 'Learn Anywhere', desc: 'Complete courses on any device, at your own pace, whenever suits you.' },
-              { icon: '🎓', title: 'Instant Certificates', desc: 'Download your certificate immediately upon course completion.' },
-              { icon: '🔄', title: 'Always Updated', desc: 'Course content is regularly updated to reflect the latest regulatory changes.' },
-            ].map((item) => (
-              <div key={item.title} className="text-center">
-                <div className="text-3xl mb-3">{item.icon}</div>
-                <h3 className="font-bold text-gray-900 mb-2 text-sm">{item.title}</h3>
-                <p className="text-xs text-gray-500 leading-relaxed">{item.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* What you get section */}
-      <section className="py-16 bg-gray-50">
-        <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
-          <div className="grid md:grid-cols-2 gap-10 items-center">
-            <div>
-              <h2 className="text-2xl font-bold text-gray-900 mb-4">
-                Courses Designed for Australian Care Settings
-              </h2>
-              <p className="text-gray-600 mb-6 leading-relaxed">
-                All content is developed by Australian care sector experts and reviewed by regulatory professionals. Every course aligns with current NDIS, aged care, and workplace health and safety requirements.
-              </p>
-              <ul className="space-y-3">
-                {[
-                  'NDIS Practice Standards aligned',
-                  'Aged Care Quality Standards compliant',
-                  'WHS Act and Regulations referenced',
-                  'Australian case studies and examples',
-                  'Regular content reviews and updates',
-                  'Accessible for all learning styles',
-                ].map((item) => (
-                  <li key={item} className="flex items-start gap-3">
-                    <CheckCircle className="h-5 w-5 text-teal-500 mt-0.5 flex-shrink-0" />
-                    <span className="text-sm text-gray-700">{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-              <h3 className="font-bold text-gray-900 mb-4">Your Learning Dashboard</h3>
-              <div className="space-y-4">
-                {[
-                  { title: 'NDIS Fundamentals', progress: 100, completed: true },
-                  { title: 'Manual Handling', progress: 65, completed: false },
-                  { title: 'Mental Health First Aid', progress: 20, completed: false },
-                ].map((course) => (
-                  <div key={course.title}>
-                    <div className="flex justify-between text-sm mb-1.5">
-                      <span className={course.completed ? 'text-gray-500 line-through' : 'text-gray-700 font-medium'}>
-                        {course.title}
-                      </span>
-                      <span className="text-xs text-gray-400">{course.progress}%</span>
-                    </div>
-                    <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
-                      <div
-                        className={`h-full rounded-full ${course.completed ? 'bg-green-500' : 'bg-teal-500'}`}
-                        style={{ width: `${course.progress}%` }}
-                      />
-                    </div>
-                  </div>
-                ))}
-                <div className="pt-2 border-t border-gray-100">
-                  <div className="flex items-center gap-2 text-sm text-gray-500">
-                    <Award className="h-4 w-4 text-yellow-500" />
-                    <span>1 certificate earned · 2 in progress</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* CTA */}
       <section className="py-16 bg-gradient-to-r from-blue-600 to-teal-600">
         <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-2xl font-bold text-white mb-3">Start Learning Today</h2>
@@ -343,15 +227,10 @@ export default function TrainingPage() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link href="/auth/register">
-              <Button size="lg" variant="white">
-                Start Free Trial
-                <ArrowRight className="h-4 w-4" />
-              </Button>
+              <Button size="lg" variant="white">Start Free Trial <ArrowRight className="h-4 w-4" /></Button>
             </Link>
             <Link href="/pricing">
-              <Button size="lg" variant="outline" className="border-2 border-white text-white hover:bg-white/10">
-                View Pricing
-              </Button>
+              <Button size="lg" variant="outline" className="border-2 border-white text-white hover:bg-white/10">View Pricing</Button>
             </Link>
           </div>
         </div>

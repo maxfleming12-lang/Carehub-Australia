@@ -215,12 +215,12 @@ export default function ShiftNotesPage() {
                   <h2 className="font-bold text-gray-900 mb-4">Shift Content</h2>
                   <div className="space-y-3">
                     {[
-                      { key: 'activities' as const, label: 'Activities Completed *', placeholder: 'What did you do during the shift? (e.g. morning routine, community access, meal preparation...)' },
-                      { key: 'observations' as const, label: 'Observations', placeholder: 'What did you observe? (behaviours, interactions, communication...)' },
-                      { key: 'mood' as const, label: 'Client Mood & Wellbeing', placeholder: 'How was the client today? (mood, energy, appetite, sleep...)' },
+                      { key: 'activities' as const, label: 'Activities Completed *', placeholder: 'What did you do during the shift?' },
+                      { key: 'observations' as const, label: 'Observations', placeholder: 'What did you observe?' },
+                      { key: 'mood' as const, label: 'Client Mood & Wellbeing', placeholder: 'How was the client today?' },
                       { key: 'goals' as const, label: 'Goals Progress', placeholder: 'Progress toward NDIS goals this shift...' },
                       { key: 'medications' as const, label: 'Medications (if applicable)', placeholder: 'Medications administered, time, dose...' },
-                      { key: 'incidents' as const, label: 'Incidents / Concerns', placeholder: 'Any incidents, near misses, or concerns? (Leave blank if none)' },
+                      { key: 'incidents' as const, label: 'Incidents / Concerns', placeholder: 'Any incidents or concerns? (Leave blank if none)' },
                     ].map((field) => (
                       <div key={field.key}>
                         <label className="text-xs font-medium text-gray-600 mb-1 block">{field.label}</label>
@@ -287,13 +287,6 @@ export default function ShiftNotesPage() {
                       <p className="text-sm text-gray-400 max-w-sm">
                         Fill in the shift details on the left, then click &quot;Generate Shift Note&quot; to create a professional NDIS-compliant shift note.
                       </p>
-                      <div className="mt-6 grid grid-cols-3 gap-3 text-xs">
-                        {['NDIS Compliant', 'Professional Language', 'Instant PDF'].map((feat) => (
-                          <div key={feat} className="rounded-lg bg-teal-50 border border-teal-100 px-3 py-2 text-teal-700 font-medium">
-                            {feat}
-                          </div>
-                        ))}
-                      </div>
                     </div>
                   )}
 
@@ -322,29 +315,6 @@ export default function ShiftNotesPage() {
                 </CardContent>
               </Card>
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Benefits */}
-      <section className="py-12 bg-white">
-        <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
-          <h2 className="text-xl font-bold text-gray-900 mb-6 text-center">
-            Why Care Workers Love Our Shift Note Creator
-          </h2>
-          <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-4">
-            {[
-              { emoji: '⚡', title: 'Save Time', desc: 'Average 15-20 minutes saved per shift note' },
-              { emoji: '✅', title: 'NDIS Compliant', desc: 'Language aligned with NDIS Practice Standards' },
-              { emoji: '📱', title: 'Any Device', desc: 'Create notes from phone, tablet, or desktop' },
-              { emoji: '📥', title: 'Instant PDF', desc: 'Download and email notes immediately' },
-            ].map((item) => (
-              <div key={item.title} className="text-center p-4 rounded-xl bg-gray-50">
-                <div className="text-2xl mb-2">{item.emoji}</div>
-                <div className="font-bold text-gray-900 text-sm mb-1">{item.title}</div>
-                <div className="text-xs text-gray-500">{item.desc}</div>
-              </div>
-            ))}
           </div>
         </div>
       </section>
