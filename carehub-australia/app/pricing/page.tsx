@@ -192,7 +192,7 @@ export default function PricingPage() {
                       <p className="text-xs text-gray-400 mt-1">per user · GST included</p>
                     )}
                   </div>
-                  <Link href={plan.price === 0 ? '/auth/register' : '/auth/register'}>
+                  <Link href="/auth/register">
                     <Button variant={plan.buttonVariant} className="w-full mb-6">
                       {plan.price === 0 ? 'Get Started Free' : 'Start Free Trial'}
                     </Button>

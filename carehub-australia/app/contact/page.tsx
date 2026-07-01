@@ -143,7 +143,7 @@ export default function ContactPage() {
               </form>
             </div>
 
-            {/* FAQ / Support options */}
+            {/* FAQ */}
             <div>
               <h2 className="text-2xl font-bold text-gray-900 mb-6">Common Questions</h2>
               <div className="space-y-4">
