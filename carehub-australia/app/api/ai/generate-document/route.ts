@@ -2,8 +2,6 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createSupabaseServerClient } from '@/lib/supabase-server'
 import OpenAI from 'openai'
 
-const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
-
 const documentPrompts: Record<string, (ctx: Record<string, string>) => string> = {
   care_plan: (ctx) => `Create a professional, NDIS-compliant care plan document for an Australian disability support setting.
 
@@ -134,6 +132,8 @@ export async function POST(request: NextRequest) {
     }
 
     const prompt = promptFn(context)
+
+    const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
 
     const completion = await openai.chat.completions.create({
       model: 'gpt-4o-mini',
