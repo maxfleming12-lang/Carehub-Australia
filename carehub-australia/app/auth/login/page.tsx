@@ -20,23 +20,36 @@ export default function LoginPage() {
     setLoading(true)
     setError('')
 
-    const supabase = createBrowserClient<Database>(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!
-    )
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+    const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY
 
-    const { error: signInError } = await supabase.auth.signInWithPassword({
-      email: formData.email,
-      password: formData.password,
-    })
-
-    if (signInError) {
-      setError(signInError.message)
+    if (!supabaseUrl || !supabaseKey) {
+      setError('Login is not configured yet. Please contact support.')
       setLoading(false)
       return
     }
 
-    window.location.href = '/dashboard'
+    try {
+      const supabase = createBrowserClient<Database>(supabaseUrl, supabaseKey)
+
+      const { error: signInError } = await supabase.auth.signInWithPassword({
+        email: formData.email,
+        password: formData.password,
+      })
+
+      if (signInError) {
+        setError(signInError.message)
+        setLoading(false)
+        return
+      }
+
+      window.location.href = '/dashboard'
+    } catch (err) {
+      setError(
+        err instanceof Error ? err.message : 'Something went wrong. Please try again.'
+      )
+      setLoading(false)
+    }
   }
 
   return (
