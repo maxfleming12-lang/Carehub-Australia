@@ -37,44 +37,57 @@ export default function RegisterPage() {
     setLoading(true)
     setError('')
 
-    const supabase = createBrowserClient<Database>(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!
-    )
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+    const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY
 
-    const { data, error: signUpError } = await supabase.auth.signUp({
-      email: formData.email,
-      password: formData.password,
-      options: {
-        data: {
-          full_name: formData.fullName,
-        },
-      },
-    })
-
-    if (signUpError) {
-      setError(signUpError.message)
+    if (!supabaseUrl || !supabaseKey) {
+      setError('Registration is not configured yet. Please contact support.')
       setLoading(false)
       return
     }
 
-    // Save extra profile fields — the DB trigger already created the base profile
-    if (data.user) {
-      await supabase
-        .from('profiles')
-        .update({
-          organization: formData.organisation || null,
-          state: formData.state || null,
-        })
-        .eq('id', data.user.id)
-    }
+    try {
+      const supabase = createBrowserClient<Database>(supabaseUrl, supabaseKey)
 
-    // If email confirmation is disabled in Supabase, redirect immediately
-    if (data.session) {
-      window.location.href = '/dashboard'
-    } else {
-      // Email confirmation required — show success message
-      setSuccess(true)
+      const { data, error: signUpError } = await supabase.auth.signUp({
+        email: formData.email,
+        password: formData.password,
+        options: {
+          data: {
+            full_name: formData.fullName,
+          },
+        },
+      })
+
+      if (signUpError) {
+        setError(signUpError.message)
+        setLoading(false)
+        return
+      }
+
+      // Save extra profile fields — the DB trigger already created the base profile
+      if (data.user) {
+        await supabase
+          .from('profiles')
+          .update({
+            organization: formData.organisation || null,
+            state: formData.state || null,
+          })
+          .eq('id', data.user.id)
+      }
+
+      // If email confirmation is disabled in Supabase, redirect immediately
+      if (data.session) {
+        window.location.href = '/dashboard'
+      } else {
+        // Email confirmation required — show success message
+        setSuccess(true)
+        setLoading(false)
+      }
+    } catch (err) {
+      setError(
+        err instanceof Error ? err.message : 'Something went wrong. Please try again.'
+      )
       setLoading(false)
     }
   }

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createSupabaseServerClient } from '@/lib/supabase-server'
-import { stripe, PLANS } from '@/lib/stripe'
+import { getStripe, PLANS } from '@/lib/stripe'
 
 export async function POST(request: NextRequest) {
   try {
@@ -18,6 +18,8 @@ export async function POST(request: NextRequest) {
     }
 
     const plan = PLANS[planName as keyof typeof PLANS]
+
+    const stripe = getStripe()
 
     // Get or create Stripe customer
     const { data: profile } = await supabase

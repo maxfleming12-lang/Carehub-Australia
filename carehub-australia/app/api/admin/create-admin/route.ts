@@ -1,14 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createSupabaseAdminClient } from '@/lib/supabase-server'
 
-/**
- * One-time endpoint to create the first admin account.
- * Protected by ADMIN_SETUP_SECRET env var.
- * Disable or delete this route after your admin account is created.
- *
- * POST /api/admin/create-admin
- * Body: { secret, email, password, fullName }
- */
 export async function POST(request: NextRequest) {
   const setupSecret = process.env.ADMIN_SETUP_SECRET
   if (!setupSecret) {
