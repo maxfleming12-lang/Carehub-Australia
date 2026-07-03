@@ -2,6 +2,20 @@ import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 
 export async function proxy(request: NextRequest) {
+  const { pathname } = request.nextUrl
+  const isAdminLoginPage = pathname === '/admin/login'
+
+  if (
+    !process.env.NEXT_PUBLIC_SUPABASE_URL ||
+    !process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY
+  ) {
+    if (isAdminLoginPage) {
+      return NextResponse.next({ request })
+    }
+
+    return NextResponse.redirect(new URL('/admin/login', request.url))
+  }
+
   let supabaseResponse = NextResponse.next({ request })
 
   const supabase = createServerClient(
@@ -29,8 +43,6 @@ export async function proxy(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser()
 
-  const { pathname } = request.nextUrl
-  const isAdminLoginPage = pathname === '/admin/login'
   const isAdminRoute = pathname.startsWith('/admin')
 
   // Unauthenticated request to any admin route → redirect to admin login
