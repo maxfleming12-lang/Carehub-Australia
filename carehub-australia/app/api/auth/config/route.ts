@@ -19,13 +19,35 @@ function isValidSupabaseUrl(value: string | undefined) {
   }
 }
 
+function getUrlHost(value: string | undefined) {
+  try {
+    return value ? new URL(value).hostname : null
+  } catch {
+    return null
+  }
+}
+
 export function GET() {
   const { supabaseUrl, supabaseKey } = getSupabasePublicConfig()
+  const urlConfigured = isValidSupabaseUrl(supabaseUrl)
+  const keyConfigured = !isPlaceholderSupabaseValue(supabaseKey)
 
-  if (!isValidSupabaseUrl(supabaseUrl) || isPlaceholderSupabaseValue(supabaseKey)) {
+  if (!urlConfigured || !keyConfigured) {
     return NextResponse.json(
       {
         configured: false,
+        checks: {
+          supabaseUrl: {
+            present: Boolean(supabaseUrl),
+            valid: urlConfigured,
+            host: getUrlHost(supabaseUrl),
+          },
+          supabaseKey: {
+            present: Boolean(supabaseKey),
+            valid: keyConfigured,
+            length: supabaseKey?.length ?? 0,
+          },
+        },
         error:
           'Supabase public environment variables are missing or still contain placeholder values.',
       },
