@@ -16,6 +16,14 @@ bun dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
+## Login setup
+
+Login uses Supabase email/password authentication. If the login screen says
+`Login is not configured yet. Please contact support.`, create `.env.local`
+from `.env.example` and add your Supabase project URL and publishable key.
+
+See [docs/LOGIN_SETUP.md](docs/LOGIN_SETUP.md) for the full local and production setup.
+
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
@@ -56,7 +64,7 @@ chmod +x scripts/create-admin.sh
 - Or call the endpoint directly:
 
 ```bash
-curl -X POST http://localhost:3000/api/admin/create-admin \
+curl -X POST http://sataus.net/api/admin/create-admin \
 	-H "Content-Type: application/json" \
 	-d '{"secret":"<your_secret>","email":"admin@example.com","password":"s3cureP@ss","fullName":"Admin User"}'
 ```
@@ -64,4 +72,3 @@ curl -X POST http://localhost:3000/api/admin/create-admin \
 Security notes:
 - Ensure `.env.local` is listed in `.gitignore` and never commit secrets.
 - After creating the admin account, delete or disable `app/api/admin/create-admin/route.ts` or unset `ADMIN_SETUP_SECRET` in production.
-
