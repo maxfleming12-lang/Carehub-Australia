@@ -6,8 +6,7 @@ import { Eye, EyeOff, Heart, ArrowRight } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Card, CardContent } from '@/components/ui/card'
-import { createBrowserClient } from '@supabase/ssr'
-import type { Database } from '@/types/database'
+import { createSupabaseBrowserClient } from '@/lib/supabase-browser'
 
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false)
@@ -20,17 +19,14 @@ export default function LoginPage() {
     setLoading(true)
     setError('')
 
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
-    const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY
-
-    if (!supabaseUrl || !supabaseKey) {
-      setError('Login is not configured yet. Please contact support.')
-      setLoading(false)
-      return
-    }
-
     try {
-      const supabase = createBrowserClient<Database>(supabaseUrl, supabaseKey)
+      const { supabase, error: configError } = createSupabaseBrowserClient()
+
+      if (configError || !supabase) {
+        setError(configError)
+        setLoading(false)
+        return
+      }
 
       const { error: signInError } = await supabase.auth.signInWithPassword({
         email: formData.email,

@@ -1,14 +1,13 @@
 import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
+import { getSupabasePublicConfig } from './lib/supabase-config'
 
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl
   const isAdminLoginPage = pathname === '/admin/login'
+  const { supabaseUrl, supabaseKey } = getSupabasePublicConfig()
 
-  if (
-    !process.env.NEXT_PUBLIC_SUPABASE_URL ||
-    !process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY
-  ) {
+  if (!supabaseUrl || !supabaseKey) {
     if (isAdminLoginPage) {
       return NextResponse.next({ request })
     }
@@ -19,8 +18,8 @@ export async function proxy(request: NextRequest) {
   let supabaseResponse = NextResponse.next({ request })
 
   const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!,
+    supabaseUrl,
+    supabaseKey,
     {
       cookies: {
         getAll() {

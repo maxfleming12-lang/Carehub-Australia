@@ -6,8 +6,7 @@ import { Eye, EyeOff, Heart, CheckCircle, ArrowRight } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Card, CardContent } from '@/components/ui/card'
-import { createBrowserClient } from '@supabase/ssr'
-import type { Database } from '@/types/database'
+import { createSupabaseBrowserClient } from '@/lib/supabase-browser'
 
 const benefits = [
   '14-day free Professional trial',
@@ -37,17 +36,16 @@ export default function RegisterPage() {
     setLoading(true)
     setError('')
 
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
-    const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY
-
-    if (!supabaseUrl || !supabaseKey) {
-      setError('Registration is not configured yet. Please contact support.')
-      setLoading(false)
-      return
-    }
-
     try {
-      const supabase = createBrowserClient<Database>(supabaseUrl, supabaseKey)
+      const { supabase, error: configError } = createSupabaseBrowserClient(
+        'Registration is not configured yet. Please contact support.'
+      )
+
+      if (configError || !supabase) {
+        setError(configError)
+        setLoading(false)
+        return
+      }
 
       const { data, error: signUpError } = await supabase.auth.signUp({
         email: formData.email,

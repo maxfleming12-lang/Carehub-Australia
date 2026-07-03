@@ -4,10 +4,9 @@ import { useState, type FormEvent } from 'react'
 import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { Eye, EyeOff, AlertTriangle } from 'lucide-react'
-import { createBrowserClient } from '@supabase/ssr'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import type { Database } from '@/types/database'
+import { createSupabaseBrowserClient } from '@/lib/supabase-browser'
 
 function getSafeNextPath(next: string | null) {
   if (!next || !next.startsWith('/') || next.startsWith('//')) {
@@ -32,17 +31,16 @@ export function AdminLoginForm() {
     setLoading(true)
     setError('')
 
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
-    const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY
-
-    if (!supabaseUrl || !supabaseKey) {
-      setError('Admin login is not configured yet. Please contact support.')
-      setLoading(false)
-      return
-    }
-
     try {
-      const supabase = createBrowserClient<Database>(supabaseUrl, supabaseKey)
+      const { supabase, error: configError } = createSupabaseBrowserClient(
+        'Admin login is not configured yet. Please contact support.'
+      )
+
+      if (configError || !supabase) {
+        setError(configError)
+        setLoading(false)
+        return
+      }
 
       const { error: signInError } = await supabase.auth.signInWithPassword({
         email,
