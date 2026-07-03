@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, Suspense } from 'react'
+import React, { useState, Suspense, type FormEvent } from 'react'
 import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { Eye, EyeOff, Shield, AlertTriangle } from 'lucide-react'
@@ -25,7 +25,7 @@ function AdminLoginForm() {
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setLoading(true)
     setError('')
