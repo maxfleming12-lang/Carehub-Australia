@@ -37,7 +37,7 @@ export default function RegisterPage() {
     setError('')
 
     try {
-      const { supabase, error: configError } = createSupabaseBrowserClient(
+      const { supabase, error: configError } = await createSupabaseBrowserClient(
         'Registration is not configured yet. Please contact support.'
       )
 

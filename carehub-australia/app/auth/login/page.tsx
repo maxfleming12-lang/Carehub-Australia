@@ -20,7 +20,7 @@ export default function LoginPage() {
     setError('')
 
     try {
-      const { supabase, error: configError } = createSupabaseBrowserClient()
+      const { supabase, error: configError } = await createSupabaseBrowserClient()
 
       if (configError || !supabase) {
         setError(configError)

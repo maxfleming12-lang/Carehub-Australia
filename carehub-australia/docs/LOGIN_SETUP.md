@@ -89,3 +89,21 @@ Add the same required variables to the hosting provider:
 Redeploy after changing environment variables.
 
 After the first admin is created, remove `ADMIN_SETUP_SECRET` from production or disable `app/api/admin/create-admin/route.ts`.
+
+## Live Troubleshooting
+
+After deploying, open:
+
+```text
+https://your-live-domain.com/api/auth/config
+```
+
+Expected result:
+
+```json
+{"configured":true,"supabaseUrl":"https://...supabase.co","supabaseKey":"..."}
+```
+
+If you see `configured: false`, the live host does not have valid Supabase environment variables for that deployment. Check the Production environment variables and redeploy.
+
+If this URL is `404`, the latest code has not been deployed or the host is using the wrong project root. On Vercel, the root directory should be `carehub-australia`.

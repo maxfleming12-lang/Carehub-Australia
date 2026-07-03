@@ -1,7 +1,10 @@
 'use client'
 
 import { createBrowserClient } from '@supabase/ssr'
-import { getSupabasePublicConfig } from '@/lib/supabase-config'
+import {
+  getSupabasePublicConfig,
+  isPlaceholderSupabaseValue,
+} from '@/lib/supabase-config'
 import type { Database } from '@/types/database'
 
 type BrowserClientResult =
@@ -18,12 +21,17 @@ function isHeaderSafe(value: string) {
   return /^[\x21-\x7E]+$/.test(value)
 }
 
-export function createSupabaseBrowserClient(
+function buildBrowserClient(
+  supabaseUrl: string | undefined,
+  supabaseKey: string | undefined,
   unconfiguredMessage = 'Login is not configured yet. Please contact support.'
 ): BrowserClientResult {
-  const { supabaseUrl, supabaseKey } = getSupabasePublicConfig()
-
-  if (!supabaseUrl || !supabaseKey) {
+  if (
+    !supabaseUrl ||
+    !supabaseKey ||
+    isPlaceholderSupabaseValue(supabaseUrl) ||
+    isPlaceholderSupabaseValue(supabaseKey)
+  ) {
     return {
       supabase: null,
       error: unconfiguredMessage,
@@ -50,5 +58,43 @@ export function createSupabaseBrowserClient(
   return {
     supabase: createBrowserClient<Database>(supabaseUrl, supabaseKey),
     error: null,
+  }
+}
+
+export async function createSupabaseBrowserClient(
+  unconfiguredMessage = 'Login is not configured yet. Please contact support.'
+): Promise<BrowserClientResult> {
+  const { supabaseUrl, supabaseKey } = getSupabasePublicConfig()
+  const bundledClient = buildBrowserClient(
+    supabaseUrl,
+    supabaseKey,
+    unconfiguredMessage
+  )
+
+  if (bundledClient.supabase) {
+    return bundledClient
+  }
+
+  try {
+    const response = await fetch('/api/auth/config', {
+      cache: 'no-store',
+    })
+
+    if (!response.ok) {
+      return bundledClient
+    }
+
+    const config = (await response.json()) as {
+      supabaseUrl?: string
+      supabaseKey?: string
+    }
+
+    return buildBrowserClient(
+      config.supabaseUrl,
+      config.supabaseKey,
+      unconfiguredMessage
+    )
+  } catch {
+    return bundledClient
   }
 }

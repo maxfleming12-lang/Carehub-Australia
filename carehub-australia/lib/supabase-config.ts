@@ -1,6 +1,7 @@
 const quoteChars = /^[`"'“”‘’]+|[`"'“”‘’]+$/g
 const invisibleChars = /[\u200B-\u200D\uFEFF]/g
 const nonHeaderChars = /[^\x21-\x7E]/g
+const placeholderPattern = /^(https:\/\/your-project-ref\.supabase\.co|your-.+|replace-.+|placeholder)$/i
 
 export function cleanSupabaseEnvValue(value: string | undefined) {
   return value
@@ -9,6 +10,10 @@ export function cleanSupabaseEnvValue(value: string | undefined) {
     .replace(quoteChars, '')
     .replace(/\s+/g, '')
     .replace(nonHeaderChars, '')
+}
+
+export function isPlaceholderSupabaseValue(value: string | undefined) {
+  return !value || placeholderPattern.test(value)
 }
 
 export function getSupabasePublicConfig() {

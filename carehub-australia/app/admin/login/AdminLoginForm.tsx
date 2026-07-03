@@ -32,7 +32,7 @@ export function AdminLoginForm() {
     setError('')
 
     try {
-      const { supabase, error: configError } = createSupabaseBrowserClient(
+      const { supabase, error: configError } = await createSupabaseBrowserClient(
         'Admin login is not configured yet. Please contact support.'
       )
 
