@@ -57,6 +57,20 @@ CREATE TRIGGER update_profiles_updated_at
     BEFORE UPDATE ON public.profiles
     FOR EACH ROW EXECUTE FUNCTION public.handle_updated_at();
 
+-- Admin role helper used by RLS policies.
+CREATE OR REPLACE FUNCTION public.is_admin(user_id UUID)
+RETURNS BOOLEAN AS $$
+    SELECT EXISTS (
+        SELECT 1
+        FROM public.profiles
+        WHERE id = user_id AND role = 'admin'
+    );
+$$ LANGUAGE sql SECURITY DEFINER SET search_path = public;
+
+REVOKE ALL ON FUNCTION public.is_admin(UUID) FROM PUBLIC;
+GRANT EXECUTE ON FUNCTION public.is_admin(UUID) TO authenticated;
+GRANT EXECUTE ON FUNCTION public.is_admin(UUID) TO service_role;
+
 -- ============================================================
 -- RESOURCES TABLE
 -- ============================================================
@@ -197,12 +211,7 @@ CREATE POLICY "Users can update their own profile"
 
 CREATE POLICY "Admins can view all profiles"
     ON public.profiles FOR SELECT
-    USING (
-        EXISTS (
-            SELECT 1 FROM public.profiles
-            WHERE id = auth.uid() AND role = 'admin'
-        )
-    );
+    USING (public.is_admin(auth.uid()));
 
 -- Resources policies
 CREATE POLICY "Anyone can view published free resources"
@@ -215,13 +224,13 @@ CREATE POLICY "Authenticated users can view resources for their tier"
         auth.uid() IS NOT NULL AND
         is_published = true AND (
             access_tier = 'free' OR
+            public.is_admin(auth.uid()) OR
             EXISTS (
                 SELECT 1 FROM public.profiles p
                 WHERE p.id = auth.uid() AND (
                     (access_tier = 'starter' AND p.subscription_tier IN ('starter', 'professional', 'enterprise')) OR
                     (access_tier = 'professional' AND p.subscription_tier IN ('professional', 'enterprise')) OR
-                    (access_tier = 'enterprise' AND p.subscription_tier = 'enterprise') OR
-                    p.role = 'admin'
+                    (access_tier = 'enterprise' AND p.subscription_tier = 'enterprise')
                 )
             )
         )
@@ -234,9 +243,8 @@ CREATE POLICY "Anyone can view published blog posts"
 
 CREATE POLICY "Admins can manage blog posts"
     ON public.blog_posts FOR ALL
-    USING (
-        EXISTS (SELECT 1 FROM public.profiles WHERE id = auth.uid() AND role = 'admin')
-    );
+    USING (public.is_admin(auth.uid()))
+    WITH CHECK (public.is_admin(auth.uid()));
 
 -- Assessments policies
 CREATE POLICY "Users can view their own assessments"
