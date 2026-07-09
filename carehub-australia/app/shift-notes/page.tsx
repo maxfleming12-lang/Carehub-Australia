@@ -48,11 +48,11 @@ export default function ShiftNotesPage() {
     async function checkAuth() {
       const { supabase } = await createSupabaseBrowserClient()
       const {
-        data: { user },
-      } = supabase ? await supabase.auth.getUser() : { data: { user: null } }
+        data: { session },
+      } = supabase ? await supabase.auth.getSession() : { data: { session: null } }
 
       if (mounted) {
-        setIsLoggedIn(Boolean(user))
+        setIsLoggedIn(Boolean(session?.user))
         setAuthReady(true)
       }
     }
@@ -84,9 +84,29 @@ export default function ShiftNotesPage() {
     setError('')
 
     try {
+      const { supabase, error: configError } = await createSupabaseBrowserClient()
+
+      if (configError || !supabase) {
+        throw new Error(configError)
+      }
+
+      const {
+        data: { session },
+      } = await supabase.auth.getSession()
+
+      if (!session) {
+        window.location.href = '/auth/login?next=/shift-notes'
+        return
+      }
+
+      setIsLoggedIn(true)
+
       const response = await fetch('/api/ai/generate-shift-note', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${session.access_token}`,
+        },
         body: JSON.stringify(formData),
       })
       const result = (await response.json().catch(() => null)) as { content?: string; error?: string } | null

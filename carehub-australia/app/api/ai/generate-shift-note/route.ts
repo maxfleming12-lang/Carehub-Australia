@@ -1,11 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createSupabaseServerClient } from '@/lib/supabase-server'
+import { getAuthenticatedSupabaseClient } from '@/lib/api-auth'
 import OpenAI from 'openai'
 
 export async function POST(request: NextRequest) {
   try {
-    const supabase = await createSupabaseServerClient()
-    const { data: { user } } = await supabase.auth.getUser()
+    const { supabase, user } = await getAuthenticatedSupabaseClient(request)
 
     if (!user) {
       return NextResponse.json({ error: 'Unauthorised' }, { status: 401 })

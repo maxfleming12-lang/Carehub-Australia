@@ -2,8 +2,7 @@ import type { Metadata } from 'next'
 import { Mail, Phone, MapPin, Clock, MessageSquare } from 'lucide-react'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
+import { ContactForm } from './ContactForm'
 
 export const metadata: Metadata = {
   title: 'Contact Us',
@@ -19,6 +18,7 @@ const contactMethods = [
     subvalue: '',
     desc: 'Mon–Fri, 8am–6pm AEST',
     color: 'bg-teal-50 text-teal-600',
+    href: 'tel:+61451381843',
   },
   {
     icon: Mail,
@@ -27,14 +27,16 @@ const contactMethods = [
     subvalue: '',
     desc: 'Usually replies within 4 hours',
     color: 'bg-blue-50 text-blue-600',
+    href: 'mailto:hello@sataus.net',
   },
   {
     icon: MessageSquare,
     label: 'Live Chat',
-    value: 'Chat with us',
+    value: 'Start support chat',
     subvalue: '',
-    desc: 'Available during business hours',
+    desc: 'Opens a live support email request',
     color: 'bg-purple-50 text-purple-600',
+    href: 'mailto:hello@sataus.net?subject=Live%20support%20request',
   },
   {
     icon: MapPin,
@@ -43,6 +45,7 @@ const contactMethods = [
     subvalue: '',
     desc: 'Remote-first, serving all states',
     color: 'bg-orange-50 text-orange-600',
+    href: '',
   },
 ]
 
@@ -69,7 +72,12 @@ export default function ContactPage() {
         <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-16">
             {contactMethods.map((method) => (
-              <Card key={method.label} className="text-center card-hover">
+              <a
+                key={method.label}
+                href={method.href || undefined}
+                className={!method.href ? 'pointer-events-none' : undefined}
+              >
+                <Card className="text-center card-hover h-full">
                 <CardContent className="p-5">
                   <div className={`inline-flex h-12 w-12 items-center justify-center rounded-xl ${method.color} mb-3`}>
                     <method.icon className="h-6 w-6" />
@@ -80,6 +88,7 @@ export default function ContactPage() {
                   <p className="text-xs text-gray-400 mt-1">{method.desc}</p>
                 </CardContent>
               </Card>
+              </a>
             ))}
           </div>
 
@@ -87,60 +96,7 @@ export default function ContactPage() {
             {/* Contact form */}
             <div>
               <h2 className="text-2xl font-bold text-gray-900 mb-6">Send Us a Message</h2>
-              <form className="space-y-4">
-                <div className="grid sm:grid-cols-2 gap-4">
-                  <div>
-                    <label className="text-sm font-medium text-gray-700 block mb-1.5">First Name *</label>
-                    <Input placeholder="Jane" />
-                  </div>
-                  <div>
-                    <label className="text-sm font-medium text-gray-700 block mb-1.5">Last Name *</label>
-                    <Input placeholder="Smith" />
-                  </div>
-                </div>
-                <div>
-                  <label className="text-sm font-medium text-gray-700 block mb-1.5">Email Address *</label>
-                  <Input type="email" placeholder="jane@organisation.com.au" />
-                </div>
-                <div>
-                  <label className="text-sm font-medium text-gray-700 block mb-1.5">Phone (optional)</label>
-                  <Input type="tel" placeholder="0400 000 000" />
-                </div>
-                <div>
-                  <label className="text-sm font-medium text-gray-700 block mb-1.5">Organisation</label>
-                  <Input placeholder="Your organisation name" />
-                </div>
-                <div>
-                  <label className="text-sm font-medium text-gray-700 block mb-1.5">Subject *</label>
-                  <select className="w-full h-10 rounded-lg border border-gray-300 px-3 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white">
-                    <option value="">Select a topic...</option>
-                    <option>General enquiry</option>
-                    <option>Sales / pricing</option>
-                    <option>Technical support</option>
-                    <option>Account billing</option>
-                    <option>Feature request</option>
-                    <option>Partnership enquiry</option>
-                    <option>NDIS / regulatory question</option>
-                  </select>
-                </div>
-                <div>
-                  <label className="text-sm font-medium text-gray-700 block mb-1.5">Message *</label>
-                  <textarea
-                    className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500 resize-none"
-                    rows={5}
-                    placeholder="How can we help you? Please provide as much detail as possible."
-                  />
-                </div>
-                <Button variant="primary" size="lg" className="w-full">
-                  Send Message
-                  <Mail className="h-4 w-4" />
-                </Button>
-                <p className="text-xs text-gray-400">
-                  By submitting this form you agree to our{' '}
-                  <a href="/privacy" className="text-teal-600 hover:underline">Privacy Policy</a>.
-                  We never share your information with third parties.
-                </p>
-              </form>
+              <ContactForm />
             </div>
 
             {/* FAQ */}

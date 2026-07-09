@@ -309,6 +309,5 @@ CREATE INDEX IF NOT EXISTS idx_course_enrollments_course_id ON public.course_enr
 -- CONTENT SEEDING
 -- ============================================================
 
--- Production content should be added deliberately through admin tooling or
--- reviewed SQL migrations. This schema intentionally does not insert starter
--- resources or courses.
+-- Starter catalogue content is kept in supabase/seed-content.sql so it can be
+-- reviewed and rerun without duplicating rows.

@@ -44,11 +44,11 @@ export default function AIDocumentBuilderPage() {
     async function checkAuth() {
       const { supabase } = await createSupabaseBrowserClient()
       const {
-        data: { user },
-      } = supabase ? await supabase.auth.getUser() : { data: { user: null } }
+        data: { session },
+      } = supabase ? await supabase.auth.getSession() : { data: { session: null } }
 
       if (mounted) {
-        setIsLoggedIn(Boolean(user))
+        setIsLoggedIn(Boolean(session?.user))
         setAuthReady(true)
       }
     }
@@ -76,9 +76,29 @@ export default function AIDocumentBuilderPage() {
     setError('')
 
     try {
+      const { supabase, error: configError } = await createSupabaseBrowserClient()
+
+      if (configError || !supabase) {
+        throw new Error(configError)
+      }
+
+      const {
+        data: { session },
+      } = await supabase.auth.getSession()
+
+      if (!session) {
+        window.location.href = '/auth/login?next=/ai-document-builder'
+        return
+      }
+
+      setIsLoggedIn(true)
+
       const response = await fetch('/api/ai/generate-document', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${session.access_token}`,
+        },
         body: JSON.stringify({
           type: selectedType,
           title: `${selectedDoc?.label || 'Document'} - ${new Date().toLocaleDateString('en-AU')}`,

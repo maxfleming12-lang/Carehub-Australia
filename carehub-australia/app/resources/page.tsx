@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import {
   AlertCircle,
+  ArrowRight,
   BookOpen,
   Clipboard,
   Download,
@@ -27,12 +28,18 @@ type Resource = Pick<
   | 'created_at'
   | 'title'
   | 'description'
+  | 'content'
   | 'file_url'
   | 'category'
   | 'tags'
   | 'access_tier'
   | 'download_count'
 >
+
+type ProfileAccess = {
+  role: 'user' | 'admin'
+  subscription_tier: 'free' | 'starter' | 'professional' | 'enterprise' | null
+} | null
 
 const tierBadge: Record<Resource['access_tier'], { label: string; className: string }> = {
   free: { label: 'Free', className: 'bg-green-100 text-green-700' },
@@ -67,13 +74,48 @@ function buildCategoryCounts(resources: Resource[]) {
   }, {})
 }
 
+function canAccessResource(resource: Resource, profile: ProfileAccess) {
+  if (resource.access_tier === 'free') {
+    return true
+  }
+
+  if (!profile) {
+    return false
+  }
+
+  if (profile.role === 'admin') {
+    return true
+  }
+
+  const tierRank: Record<'free' | 'starter' | 'professional' | 'enterprise', number> = {
+    free: 0,
+    starter: 1,
+    professional: 2,
+    enterprise: 3,
+  }
+
+  return (tierRank[profile.subscription_tier ?? 'free'] ?? 0) >= tierRank[resource.access_tier]
+}
+
 export default async function ResourcesPage() {
   const supabase = await createSupabaseServerClient()
   const { data, error } = await supabase
     .from('resources')
-    .select('id, created_at, title, description, file_url, category, tags, access_tier, download_count')
+    .select('id, created_at, title, description, content, file_url, category, tags, access_tier, download_count')
     .eq('is_published', true)
     .order('created_at', { ascending: false })
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+
+  const { data: profile } = user
+    ? await supabase
+        .from('profiles')
+        .select('role, subscription_tier')
+        .eq('id', user.id)
+        .maybeSingle()
+    : { data: null }
 
   const resources = data ?? []
   const categoryCounts = buildCategoryCounts(resources)
@@ -138,7 +180,7 @@ export default async function ResourcesPage() {
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
               {resources.map((resource) => {
                 const tier = tierBadge[resource.access_tier]
-                const isLocked = resource.access_tier !== 'free'
+                const isLocked = !canAccessResource(resource, profile)
                 const CategoryIcon = getCategoryIcon(resource.category)
 
                 return (
@@ -187,6 +229,13 @@ export default async function ResourcesPage() {
                             Download
                           </Button>
                         </a>
+                      ) : resource.content ? (
+                        <Link href={`/resources/${resource.id}`}>
+                          <Button variant="default" size="sm" className="w-full text-xs">
+                            <ArrowRight className="h-3 w-3" />
+                            Open Resource
+                          </Button>
+                        </Link>
                       ) : (
                         <Button variant="outline" size="sm" className="w-full text-xs" disabled>
                           File Pending

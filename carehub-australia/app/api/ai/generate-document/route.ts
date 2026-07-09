@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createSupabaseServerClient } from '@/lib/supabase-server'
+import { getAuthenticatedSupabaseClient } from '@/lib/api-auth'
 import OpenAI from 'openai'
 
 const documentPrompts: Record<string, (ctx: Record<string, string>) => string> = {
@@ -74,8 +74,7 @@ Use clear, objective language appropriate for clinical documentation.`,
 
 export async function POST(request: NextRequest) {
   try {
-    const supabase = await createSupabaseServerClient()
-    const { data: { user } } = await supabase.auth.getUser()
+    const { supabase, user } = await getAuthenticatedSupabaseClient(request)
 
     if (!user) {
       return NextResponse.json({ error: 'Unauthorised' }, { status: 401 })

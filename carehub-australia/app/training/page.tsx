@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import {
   AlertCircle,
+  ArrowRight,
   Award,
   BookOpen,
   CheckCircle,
@@ -24,6 +25,7 @@ export const metadata: Metadata = {
 type Course = Pick<
   Database['public']['Tables']['courses']['Row'],
   | 'id'
+  | 'content'
   | 'title'
   | 'description'
   | 'duration_hours'
@@ -32,6 +34,11 @@ type Course = Pick<
   | 'access_tier'
   | 'certificate_enabled'
 >
+
+type ProfileAccess = {
+  role: 'user' | 'admin'
+  subscription_tier: 'free' | 'starter' | 'professional' | 'enterprise' | null
+} | null
 
 const levelColor: Record<Course['level'], string> = {
   beginner: 'bg-green-100 text-green-700',
@@ -58,13 +65,57 @@ function formatDuration(hours: number) {
   return `${hours} hours`
 }
 
+function getModuleCount(content: Course['content']) {
+  if (!content || typeof content !== 'object' || Array.isArray(content)) {
+    return 0
+  }
+
+  const modules = (content as { modules?: unknown }).modules
+  return Array.isArray(modules) ? modules.length : 0
+}
+
+function canAccessCourse(course: Course, profile: ProfileAccess) {
+  if (course.access_tier === 'free') {
+    return true
+  }
+
+  if (!profile) {
+    return false
+  }
+
+  if (profile.role === 'admin') {
+    return true
+  }
+
+  const tierRank: Record<NonNullable<ProfileAccess>['subscription_tier'] & string, number> = {
+    free: 0,
+    starter: 1,
+    professional: 2,
+    enterprise: 3,
+  }
+
+  return (tierRank[profile.subscription_tier ?? 'free'] ?? 0) >= tierRank[course.access_tier]
+}
+
 export default async function TrainingPage() {
   const supabase = await createSupabaseServerClient()
   const { data, error } = await supabase
     .from('courses')
-    .select('id, title, description, duration_hours, level, category, access_tier, certificate_enabled')
+    .select('id, content, title, description, duration_hours, level, category, access_tier, certificate_enabled')
     .eq('is_published', true)
     .order('created_at', { ascending: false })
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+
+  const { data: profile } = user
+    ? await supabase
+        .from('profiles')
+        .select('role, subscription_tier')
+        .eq('id', user.id)
+        .maybeSingle()
+    : { data: null }
 
   const courses = data ?? []
   const categoryCount = new Set(courses.map((course) => course.category)).size
@@ -121,7 +172,8 @@ export default async function TrainingPage() {
           ) : (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {courses.map((course) => {
-                const isLocked = course.access_tier !== 'free'
+                const isLocked = !canAccessCourse(course, profile)
+                const moduleCount = getModuleCount(course.content)
 
                 return (
                   <Card key={course.id} className="card-hover overflow-hidden group">
@@ -149,7 +201,7 @@ export default async function TrainingPage() {
                         </div>
                         <div className="flex items-center gap-1">
                           <BookOpen className="h-3.5 w-3.5" />
-                          {course.category}
+                          {moduleCount > 0 ? `${moduleCount} modules` : course.category}
                         </div>
                       </div>
                       {course.certificate_enabled && (
@@ -166,9 +218,12 @@ export default async function TrainingPage() {
                           </Button>
                         </Link>
                       ) : (
-                        <Button variant="outline" size="sm" className="w-full" disabled>
-                          Course Content Pending
-                        </Button>
+                        <Link href={`/training/${course.id}`}>
+                          <Button variant="primary" size="sm" className="w-full">
+                            Start Course
+                            <ArrowRight className="h-3.5 w-3.5" />
+                          </Button>
+                        </Link>
                       )}
                     </CardContent>
                   </Card>

@@ -8,6 +8,20 @@ import { Input } from '@/components/ui/input'
 import { Card, CardContent } from '@/components/ui/card'
 import { createSupabaseBrowserClient } from '@/lib/supabase-browser'
 
+function getSafeNextPath() {
+  if (typeof window === 'undefined') {
+    return '/dashboard'
+  }
+
+  const next = new URLSearchParams(window.location.search).get('next')
+
+  if (!next || !next.startsWith('/') || next.startsWith('//')) {
+    return '/dashboard'
+  }
+
+  return next
+}
+
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false)
   const [loading, setLoading] = useState(false)
@@ -39,7 +53,8 @@ export default function LoginPage() {
         return
       }
 
-      window.location.href = '/dashboard'
+      await supabase.auth.getSession()
+      window.location.assign(getSafeNextPath())
     } catch (err) {
       setError(
         err instanceof Error ? err.message : 'Something went wrong. Please try again.'
