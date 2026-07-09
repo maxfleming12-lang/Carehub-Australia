@@ -106,10 +106,10 @@ export default function RegisterPage() {
             </Link>
 
             <h2 className="text-3xl font-bold mb-4">
-              Join Australia&apos;s Largest Care Community
+              Create Your Care Workspace
             </h2>
             <p className="text-gray-300 mb-8 leading-relaxed">
-              Over 12,000 care professionals trust Scribe & Thrive to save time, stay compliant, and deliver better outcomes.
+              Set up secure access to Scribe & Thrive tools for care documentation, resources, and training.
             </p>
 
             <ul className="space-y-3">
@@ -122,16 +122,9 @@ export default function RegisterPage() {
             </ul>
 
             <div className="mt-10 p-5 rounded-xl bg-white/10 border border-white/20">
-              <p className="text-sm text-gray-200 italic leading-relaxed">
-                &ldquo;The AI document builder alone saves me an hour each day. Worth every cent.&rdquo;
+              <p className="text-sm text-gray-200 leading-relaxed">
+                Account access is backed by Supabase Auth and role-based profiles, with admin-only management screens.
               </p>
-              <div className="mt-3 flex items-center gap-2">
-                <div className="h-8 w-8 rounded-full bg-teal-500 flex items-center justify-center text-xs font-bold">JM</div>
-                <div>
-                  <div className="text-xs font-semibold">Jenny Murphy</div>
-                  <div className="text-xs text-gray-400">Support Coordinator, Perth</div>
-                </div>
-              </div>
             </div>
           </div>
 
@@ -170,7 +163,7 @@ export default function RegisterPage() {
                     Full Name *
                   </label>
                   <Input
-                    placeholder="Jane Smith"
+                    placeholder="Your full name"
                     value={formData.fullName}
                     onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
                     required
@@ -183,7 +176,7 @@ export default function RegisterPage() {
                   </label>
                   <Input
                     type="email"
-                    placeholder="jane@organisation.com.au"
+                    placeholder="you@organisation.com.au"
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                     required

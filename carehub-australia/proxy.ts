@@ -5,6 +5,8 @@ import { getSupabasePublicConfig } from './lib/supabase-config'
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl
   const isAdminLoginPage = pathname === '/admin/login'
+  const isAdminRoute = pathname.startsWith('/admin')
+  const isDashboardRoute = pathname.startsWith('/dashboard')
   const { supabaseUrl, supabaseKey } = getSupabasePublicConfig()
 
   if (!supabaseUrl || !supabaseKey) {
@@ -12,7 +14,8 @@ export async function proxy(request: NextRequest) {
       return NextResponse.next({ request })
     }
 
-    return NextResponse.redirect(new URL('/admin/login', request.url))
+    const loginPath = isAdminRoute ? '/admin/login' : '/auth/login'
+    return NextResponse.redirect(new URL(loginPath, request.url))
   }
 
   let supabaseResponse = NextResponse.next({ request })
@@ -42,11 +45,15 @@ export async function proxy(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser()
 
-  const isAdminRoute = pathname.startsWith('/admin')
-
   // Unauthenticated request to any admin route → redirect to admin login
   if (isAdminRoute && !isAdminLoginPage && !user) {
     const loginUrl = new URL('/admin/login', request.url)
+    loginUrl.searchParams.set('next', pathname)
+    return NextResponse.redirect(loginUrl)
+  }
+
+  if (isDashboardRoute && !user) {
+    const loginUrl = new URL('/auth/login', request.url)
     loginUrl.searchParams.set('next', pathname)
     return NextResponse.redirect(loginUrl)
   }
@@ -60,5 +67,5 @@ export async function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/admin/:path*'],
+  matcher: ['/admin/:path*', '/dashboard/:path*'],
 }

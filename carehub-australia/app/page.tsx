@@ -6,7 +6,6 @@ import {
   BookOpen,
   Shield,
   Users,
-  Star,
   ArrowRight,
   CheckCircle,
   Download,
@@ -20,10 +19,10 @@ import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 
 const stats = [
-  { label: 'Registered Carers', value: '12,000+' },
-  { label: 'Documents Generated', value: '85,000+' },
-  { label: 'Training Completions', value: '42,000+' },
-  { label: 'Satisfaction Rate', value: '98%' },
+  { label: 'Australian Data Storage', value: 'AU' },
+  { label: 'NDIS-Aligned Tools', value: 'NDIS' },
+  { label: 'Admin-Controlled Access', value: 'RBAC' },
+  { label: 'AI Documentation Support', value: 'AI' },
 ]
 
 const features = [
@@ -77,27 +76,18 @@ const features = [
   },
 ]
 
-const testimonials = [
+const useCases = [
   {
-    name: 'Sarah Mitchell',
-    role: 'Support Worker, Melbourne',
-    quote: "Scribe & Thrive has completely transformed how I write shift notes. What used to take me 20 minutes now takes 3. The AI understands NDIS language perfectly.",
-    rating: 5,
-    avatar: 'SM',
+    title: 'Support Workers',
+    description: 'Create clearer shift notes and support documents from your own client context.',
   },
   {
-    name: 'James Nguyen',
-    role: 'Care Manager, Brisbane',
-    quote: "The resource library alone is worth the subscription. I've found policy templates that would have taken days to create ourselves. Brilliant platform.",
-    rating: 5,
-    avatar: 'JN',
+    title: 'Coordinators',
+    description: 'Keep resources, training links, and generated documents in one care-focused workspace.',
   },
   {
-    name: 'Dr. Rebecca Torres',
-    role: 'Clinical Lead, Sydney',
-    quote: "The burnout assessment tool is clinically sound and has helped us identify at-risk staff early. The training courses are excellent quality too.",
-    rating: 5,
-    avatar: 'RT',
+    title: 'Care Organisations',
+    description: 'Use admin controls to review account access, subscription status, and platform configuration.',
   },
 ]
 
@@ -147,7 +137,7 @@ export default function HomePage() {
             <div>
               <div className="inline-flex items-center gap-2 rounded-full bg-teal-500/20 border border-teal-500/30 px-4 py-2 mb-6">
                 <Zap className="h-4 w-4 text-teal-400" />
-                <span className="text-sm font-medium text-teal-300">Australia&apos;s #1 Care Platform</span>
+                <span className="text-sm font-medium text-teal-300">Purpose-built for Australian care teams</span>
               </div>
               <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-tight mb-6">
                 Empowering{' '}
@@ -194,7 +184,7 @@ export default function HomePage() {
                   ))}
                   <div className="mt-4 p-4 bg-white/10 rounded-xl">
                     <p className="text-white/80 text-sm leading-relaxed">
-                      &ldquo;John demonstrates strong social skills and actively participates in community activities. Goals include increasing independence in daily living tasks...&rdquo;
+                      Generated care documents appear here after an authorised user provides client context and creates a document.
                     </p>
                   </div>
                   <div className="flex gap-2">
@@ -205,13 +195,13 @@ export default function HomePage() {
                 <div className="absolute -bottom-6 -left-6 bg-white rounded-xl p-4 shadow-xl">
                   <div className="flex items-center gap-3">
                     <div className="h-10 w-10 rounded-lg bg-green-100 flex items-center justify-center"><TrendingUp className="h-5 w-5 text-green-600" /></div>
-                    <div><div className="text-sm font-bold text-gray-900">85,000+</div><div className="text-xs text-gray-500">Documents Created</div></div>
+                    <div><div className="text-sm font-bold text-gray-900">Private</div><div className="text-xs text-gray-500">Workspace records</div></div>
                   </div>
                 </div>
                 <div className="absolute -top-6 -right-6 bg-white rounded-xl p-4 shadow-xl">
                   <div className="flex items-center gap-3">
                     <div className="h-10 w-10 rounded-lg bg-blue-100 flex items-center justify-center"><Clock className="h-5 w-5 text-blue-600" /></div>
-                    <div><div className="text-sm font-bold text-gray-900">Save 3+ hrs/week</div><div className="text-xs text-gray-500">On documentation</div></div>
+                    <div><div className="text-sm font-bold text-gray-900">Review ready</div><div className="text-xs text-gray-500">Structured drafts</div></div>
                   </div>
                 </div>
               </div>
@@ -231,7 +221,7 @@ export default function HomePage() {
       {/* Trust strip */}
       <section className="border-b border-gray-100 bg-gray-50 py-8">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <p className="text-center text-sm text-gray-500 mb-6">Trusted by carers and organisations across Australia</p>
+          <p className="text-center text-sm text-gray-500 mb-6">Built for Australian care compliance and privacy needs</p>
           <div className="flex flex-wrap justify-center gap-6 md:gap-10">
             {awards.map(({ label, icon: Icon }) => (
               <div key={label} className="flex items-center gap-2 text-gray-600">
@@ -272,28 +262,20 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Testimonials */}
+      {/* Use cases */}
       <section className="py-20 bg-white">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-14">
-            <Badge className="mb-4">Testimonials</Badge>
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Loved by Australia&apos;s Care Professionals</h2>
+            <Badge className="mb-4">Use Cases</Badge>
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Designed for Real Care Workflows</h2>
           </div>
           <div className="grid md:grid-cols-3 gap-6">
-            {testimonials.map((t) => (
-              <Card key={t.name} className="card-hover">
+            {useCases.map((item) => (
+              <Card key={item.title} className="card-hover">
                 <CardContent className="p-6">
-                  <div className="flex items-center gap-1 mb-4">
-                    {Array.from({ length: t.rating }).map((_, i) => (<Star key={i} className="h-4 w-4 fill-yellow-400 text-yellow-400" />))}
-                  </div>
-                  <p className="text-gray-700 italic leading-relaxed mb-6">&ldquo;{t.quote}&rdquo;</p>
-                  <div className="flex items-center gap-3">
-                    <div className="h-10 w-10 rounded-full bg-gradient-to-br from-teal-500 to-blue-500 flex items-center justify-center text-white text-sm font-bold">{t.avatar}</div>
-                    <div>
-                      <div className="font-semibold text-sm text-gray-900">{t.name}</div>
-                      <div className="text-xs text-gray-500">{t.role}</div>
-                    </div>
-                  </div>
+                  <CheckCircle className="h-5 w-5 text-teal-600 mb-4" />
+                  <h3 className="font-bold text-gray-900 mb-2">{item.title}</h3>
+                  <p className="text-gray-600 text-sm leading-relaxed">{item.description}</p>
                 </CardContent>
               </Card>
             ))}
@@ -351,7 +333,7 @@ export default function HomePage() {
         <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Ready to Transform Your Care Practice?</h2>
           <p className="text-xl text-teal-100 mb-8">
-            Join 12,000+ Australian care professionals who trust Scribe & Thrive to make their work easier, faster, and more compliant.
+            Create a secure workspace for care documentation, training, and resources without relying on pre-filled client data.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link href="/auth/register">

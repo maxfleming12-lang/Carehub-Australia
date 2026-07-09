@@ -298,24 +298,9 @@ CREATE INDEX IF NOT EXISTS idx_course_enrollments_user_id ON public.course_enrol
 CREATE INDEX IF NOT EXISTS idx_course_enrollments_course_id ON public.course_enrollments(course_id);
 
 -- ============================================================
--- SAMPLE DATA
+-- CONTENT SEEDING
 -- ============================================================
 
--- Sample resources
-INSERT INTO public.resources (title, description, category, access_tier, tags) VALUES
-    ('NDIS Support Worker Induction Pack', 'Complete onboarding package for new NDIS support workers.', 'NDIS', 'free', ARRAY['NDIS', 'induction', 'support worker']),
-    ('Incident Report Template (NDIS)', 'NDIS-compliant incident report template with guidance notes.', 'NDIS', 'free', ARRAY['NDIS', 'incident', 'template']),
-    ('Medication Management Policy Template', 'Comprehensive medication management policy for care organisations.', 'Templates', 'starter', ARRAY['medication', 'policy', 'template']),
-    ('Carer Self-Care Action Plan Workbook', 'Personal development workbook for care workers wellbeing.', 'Guides', 'free', ARRAY['wellbeing', 'self-care', 'burnout']),
-    ('Manual Handling Risk Assessment Tool', 'Systematic risk assessment for manual handling tasks.', 'Templates', 'free', ARRAY['manual handling', 'risk', 'health safety'])
-ON CONFLICT DO NOTHING;
-
--- Sample courses
-INSERT INTO public.courses (title, description, duration_hours, level, category, access_tier) VALUES
-    ('NDIS Fundamentals for Support Workers', 'Essential knowledge for anyone working in the NDIS sector.', 4, 'beginner', 'NDIS', 'free'),
-    ('Safe Manual Handling in Care Settings', 'Practical training on safe manual handling techniques.', 2, 'beginner', 'Health & Safety', 'free'),
-    ('Mental Health First Aid for Carers', 'Recognise and respond to mental health crises.', 6, 'intermediate', 'Mental Health', 'starter'),
-    ('Medication Administration & Management', 'Safe medication administration for care workers.', 3, 'intermediate', 'Clinical', 'starter'),
-    ('Positive Behaviour Support', 'Evidence-based approaches to challenging behaviour.', 5, 'intermediate', 'NDIS', 'professional'),
-    ('Aged Care Quality Standards Masterclass', 'Deep-dive training on all 8 Aged Care Quality Standards.', 8, 'advanced', 'Aged Care', 'professional')
-ON CONFLICT DO NOTHING;
+-- Production content should be added deliberately through admin tooling or
+-- reviewed SQL migrations. This schema intentionally does not insert starter
+-- resources or courses.

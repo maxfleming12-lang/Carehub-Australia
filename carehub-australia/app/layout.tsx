@@ -44,7 +44,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Scribe & Thrive Australia | Professional Care Management Platform",
     description:
-      "AI-powered tools for Australian care workers. Join thousands of professionals today.",
+      "AI-powered tools for Australian care workers, including shift notes, care plans, burnout assessments, training courses and resources.",
   },
   robots: {
     index: true,

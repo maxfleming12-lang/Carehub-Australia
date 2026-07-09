@@ -23,7 +23,7 @@ const values = [
   {
     icon: Users,
     title: 'Community Driven',
-    description: 'Our platform evolves from feedback from thousands of Australian support workers, coordinators, and managers.',
+    description: 'Our platform evolves from practical feedback from Australian support workers, coordinators, and managers.',
   },
   {
     icon: Award,
@@ -73,10 +73,10 @@ export default function AboutPage() {
             <div className="rounded-2xl bg-gradient-to-br from-teal-50 to-blue-50 p-8">
               <div className="grid grid-cols-2 gap-6">
                 {[
-                  { value: '12,000+', label: 'Registered carers' },
-                  { value: '85,000+', label: 'Documents generated' },
-                  { value: '2hrs', label: 'Saved per shift' },
-                  { value: '98%', label: 'Satisfaction rate' },
+                  { value: 'AU', label: 'Australian data focus' },
+                  { value: 'NDIS', label: 'Care documentation alignment' },
+                  { value: 'AI', label: 'Document drafting support' },
+                  { value: 'RBAC', label: 'Admin access controls' },
                 ].map((stat) => (
                   <div key={stat.label} className="text-center">
                     <div className="text-3xl font-bold text-teal-600 mb-1">{stat.value}</div>

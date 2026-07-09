@@ -47,7 +47,7 @@ export function Footer() {
             Supporting Australia&apos;s Carers, Every Step of the Way
           </h2>
           <p className="text-teal-100 mb-6 max-w-xl mx-auto">
-            Join thousands of carers and care organisations using Scribe & Thrive Australia to deliver better outcomes.
+            Use Scribe & Thrive Australia to support clearer documentation, practical training, and care resources.
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <Link
