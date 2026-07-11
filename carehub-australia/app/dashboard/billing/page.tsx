@@ -28,7 +28,7 @@ export default async function BillingPage() {
   const { profile } = await requireUser('/dashboard/billing')
   const tier = profile.subscription_tier || 'free'
   const tierInfo = tierDetails[tier] || tierDetails.free
-  const hasStripeSubscription = Boolean(profile.stripe_customer_id)
+  const hasStripeSubscription = Boolean(profile.https:acct_1ToM6fI1HEYYRDvo)
 
   return (
     <div className="pt-16 min-h-screen bg-gray-50">
