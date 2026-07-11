@@ -57,6 +57,18 @@ export async function POST(request: NextRequest) {
       }
     }
 
+    const openaiApiKey = process.env.OPENAI_API_KEY?.trim()
+
+    if (!openaiApiKey) {
+      return NextResponse.json(
+        {
+          error:
+            'OpenAI API key is not configured. Add OPENAI_API_KEY to your environment and restart the app.',
+        },
+        { status: 503 }
+      )
+    }
+
     const prompt = `Create a professional, NDIS-compliant shift note for an Australian disability support setting.
 
 Shift Information:
@@ -83,7 +95,7 @@ Create a comprehensive, professional shift note that:
 
 Format with clear headings and professional Australian care sector language.`
 
-    const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
+    const openai = new OpenAI({ apiKey: openaiApiKey })
 
     const completion = await openai.chat.completions.create({
       model: 'gpt-4o-mini',

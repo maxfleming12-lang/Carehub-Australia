@@ -86,6 +86,18 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
     }
 
+    const openaiApiKey = process.env.OPENAI_API_KEY?.trim()
+
+    if (!openaiApiKey) {
+      return NextResponse.json(
+        {
+          error:
+            'OpenAI API key is not configured. Add OPENAI_API_KEY to your environment and restart the app.',
+        },
+        { status: 503 }
+      )
+    }
+
     // Check usage limits based on subscription
     const { data: profile } = await supabase
       .from('profiles')
@@ -132,7 +144,7 @@ export async function POST(request: NextRequest) {
 
     const prompt = promptFn(context)
 
-    const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
+    const openai = new OpenAI({ apiKey: openaiApiKey })
 
     const completion = await openai.chat.completions.create({
       model: 'gpt-4o-mini',
