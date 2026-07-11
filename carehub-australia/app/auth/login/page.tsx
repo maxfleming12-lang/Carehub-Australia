@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { Eye, EyeOff, Heart, ArrowRight, LogIn } from 'lucide-react'
 import { Button } from '@/components/ui/button'
@@ -27,6 +27,16 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false)
   const [formData, setFormData] = useState({ email: '', password: '' })
   const [error, setError] = useState('')
+
+  // Show OAuth error if redirected back from failed callback
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search)
+      if (params.get('error') === 'oauth_failed') {
+        setError('Google sign-in failed. Please try again or use email/password.')
+      }
+    }
+  }, [])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()

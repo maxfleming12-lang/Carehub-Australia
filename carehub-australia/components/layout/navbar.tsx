@@ -2,10 +2,12 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
-import { Menu, X, Heart, ChevronDown } from 'lucide-react'
+import { usePathname, useRouter } from 'next/navigation'
+import { Menu, X, Heart, ChevronDown, LayoutDashboard, LogOut, User } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
+import { createSupabaseBrowserClient } from '@/lib/supabase-browser'
+import type { User as SupabaseUser } from '@supabase/supabase-js'
 
 const navigation = [
   { name: 'Home', href: '/' },
@@ -29,13 +31,69 @@ export function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null)
+  const [userDropdownOpen, setUserDropdownOpen] = useState(false)
+  const [user, setUser] = useState<SupabaseUser | null>(null)
+  const [authLoading, setAuthLoading] = useState(true)
   const pathname = usePathname()
+  const router = useRouter()
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20)
     window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
+
+  // Subscribe to auth state
+  useEffect(() => {
+    let unsubscribe: (() => void) | null = null
+
+    createSupabaseBrowserClient().then(({ supabase }) => {
+      if (!supabase) {
+        setAuthLoading(false)
+        return
+      }
+
+      // Get initial session
+      supabase.auth.getUser().then(({ data }) => {
+        setUser(data.user ?? null)
+        setAuthLoading(false)
+      })
+
+      // Listen for changes
+      const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
+        setUser(session?.user ?? null)
+        setAuthLoading(false)
+      })
+
+      unsubscribe = () => listener.subscription.unsubscribe()
+    })
+
+    return () => {
+      unsubscribe?.()
+    }
+  }, [])
+
+  // Close user dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = () => setUserDropdownOpen(false)
+    if (userDropdownOpen) {
+      document.addEventListener('click', handleClickOutside)
+    }
+    return () => document.removeEventListener('click', handleClickOutside)
+  }, [userDropdownOpen])
+
+  const handleSignOut = async () => {
+    const { supabase } = await createSupabaseBrowserClient()
+    if (supabase) {
+      await supabase.auth.signOut()
+    }
+    setUser(null)
+    router.push('/')
+    router.refresh()
+  }
+
+  const displayName = user?.user_metadata?.full_name || user?.email?.split('@')[0] || 'Account'
+  const initials = displayName.slice(0, 2).toUpperCase()
 
   return (
     <nav
@@ -105,12 +163,64 @@ export function Navbar() {
 
           {/* Auth buttons */}
           <div className="hidden lg:flex items-center gap-3">
-            <Link href="/auth/login">
-              <Button variant="ghost" size="sm">Sign In</Button>
-            </Link>
-            <Link href="/auth/register">
-              <Button variant="primary" size="sm">Get Started Free</Button>
-            </Link>
+            {authLoading ? (
+              <div className="h-8 w-24 rounded-lg bg-gray-100 animate-pulse" />
+            ) : user ? (
+              <div className="relative">
+                <button
+                  onClick={(e) => { e.stopPropagation(); setUserDropdownOpen(!userDropdownOpen) }}
+                  className="flex items-center gap-2 px-3 py-1.5 rounded-lg hover:bg-gray-100 transition-colors"
+                >
+                  <div className="h-8 w-8 rounded-full bg-gradient-to-br from-teal-500 to-blue-500 flex items-center justify-center text-white text-xs font-bold">
+                    {initials}
+                  </div>
+                  <span className="text-sm font-medium text-gray-700 max-w-[120px] truncate">{displayName}</span>
+                  <ChevronDown className={cn('h-4 w-4 text-gray-400 transition-transform', userDropdownOpen && 'rotate-180')} />
+                </button>
+
+                {userDropdownOpen && (
+                  <div className="absolute right-0 top-full mt-2 w-48 rounded-xl bg-white shadow-lg border border-gray-100 py-2 z-50">
+                    <div className="px-4 py-2 border-b border-gray-100 mb-1">
+                      <p className="text-xs text-gray-500 truncate">{user.email}</p>
+                    </div>
+                    <Link
+                      href="/dashboard"
+                      className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-teal-50 hover:text-teal-700 transition-colors"
+                      onClick={() => setUserDropdownOpen(false)}
+                    >
+                      <LayoutDashboard className="h-4 w-4" />
+                      Dashboard
+                    </Link>
+                    <Link
+                      href="/dashboard/billing"
+                      className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-teal-50 hover:text-teal-700 transition-colors"
+                      onClick={() => setUserDropdownOpen(false)}
+                    >
+                      <User className="h-4 w-4" />
+                      Account
+                    </Link>
+                    <div className="border-t border-gray-100 mt-1 pt-1">
+                      <button
+                        onClick={handleSignOut}
+                        className="flex items-center gap-2 w-full px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors"
+                      >
+                        <LogOut className="h-4 w-4" />
+                        Sign Out
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <>
+                <Link href="/auth/login">
+                  <Button variant="ghost" size="sm">Sign In</Button>
+                </Link>
+                <Link href="/auth/register">
+                  <Button variant="primary" size="sm">Get Started Free</Button>
+                </Link>
+              </>
+            )}
           </div>
 
           {/* Mobile menu button */}
@@ -161,13 +271,45 @@ export function Navbar() {
                 </Link>
               )
             )}
+
+            {/* Mobile auth */}
             <div className="pt-4 flex flex-col gap-2 border-t border-gray-100">
-              <Link href="/auth/login" onClick={() => setMobileOpen(false)}>
-                <Button variant="outline" className="w-full">Sign In</Button>
-              </Link>
-              <Link href="/auth/register" onClick={() => setMobileOpen(false)}>
-                <Button variant="primary" className="w-full">Get Started Free</Button>
-              </Link>
+              {user ? (
+                <>
+                  <div className="flex items-center gap-3 px-3 py-2">
+                    <div className="h-8 w-8 rounded-full bg-gradient-to-br from-teal-500 to-blue-500 flex items-center justify-center text-white text-xs font-bold">
+                      {initials}
+                    </div>
+                    <div>
+                      <p className="text-sm font-medium text-gray-900">{displayName}</p>
+                      <p className="text-xs text-gray-500">{user.email}</p>
+                    </div>
+                  </div>
+                  <Link href="/dashboard" onClick={() => setMobileOpen(false)}>
+                    <Button variant="outline" className="w-full justify-start gap-2">
+                      <LayoutDashboard className="h-4 w-4" />
+                      Dashboard
+                    </Button>
+                  </Link>
+                  <Button
+                    variant="outline"
+                    className="w-full justify-start gap-2 text-red-600 border-red-200 hover:bg-red-50"
+                    onClick={() => { setMobileOpen(false); handleSignOut() }}
+                  >
+                    <LogOut className="h-4 w-4" />
+                    Sign Out
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <Link href="/auth/login" onClick={() => setMobileOpen(false)}>
+                    <Button variant="outline" className="w-full">Sign In</Button>
+                  </Link>
+                  <Link href="/auth/register" onClick={() => setMobileOpen(false)}>
+                    <Button variant="primary" className="w-full">Get Started Free</Button>
+                  </Link>
+                </>
+              )}
             </div>
           </div>
         </div>
