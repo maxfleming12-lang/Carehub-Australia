@@ -51,7 +51,9 @@ BEGIN
     NEW.updated_at = NOW();
     RETURN NEW;
 END;
-$$ LANGUAGE plpgsql;
+$$ LANGUAGE plpgsql
+   SECURITY INVOKER
+   SET search_path = '';
 
 CREATE TRIGGER update_profiles_updated_at
     BEFORE UPDATE ON public.profiles
@@ -65,9 +67,12 @@ RETURNS BOOLEAN AS $$
         FROM public.profiles
         WHERE id = user_id AND role = 'admin'
     );
-$$ LANGUAGE sql SECURITY DEFINER SET search_path = public;
+$$ LANGUAGE sql
+   SECURITY DEFINER
+   SET search_path = public;
 
 REVOKE ALL ON FUNCTION public.is_admin(UUID) FROM PUBLIC;
+REVOKE EXECUTE ON FUNCTION public.is_admin(UUID) FROM anon;
 GRANT EXECUTE ON FUNCTION public.is_admin(UUID) TO authenticated;
 GRANT EXECUTE ON FUNCTION public.is_admin(UUID) TO service_role;
 

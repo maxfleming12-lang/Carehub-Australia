@@ -4,6 +4,7 @@ import { CheckCircle, X, ArrowRight, HelpCircle, Zap } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
+import { PlanButton } from '@/components/pricing/plan-button'
 
 export const metadata: Metadata = {
   title: 'Pricing',
@@ -192,11 +193,11 @@ export default function PricingPage() {
                       <p className="text-xs text-gray-400 mt-1">per user · GST included</p>
                     )}
                   </div>
-                  <Link href="/auth/register">
-                    <Button variant={plan.buttonVariant} className="w-full mb-6">
-                      {plan.price === 0 ? 'Get Started Free' : 'Start Free Trial'}
-                    </Button>
-                  </Link>
+                  <PlanButton
+                    planName={plan.name}
+                    price={plan.price}
+                    buttonVariant={plan.buttonVariant}
+                  />
                   <ul className="space-y-2.5">
                     {featureRows.map((feature) => (
                       <li key={feature} className="flex items-center justify-between gap-2">
