@@ -1,0 +1,79 @@
+diff --git a/carehub-australia/app/api/ai/generate-document/route.ts b/carehub-australia/app/api/ai/generate-document/route.ts
+index 45d8fee..4733eea 100644
+--- a/carehub-australia/app/api/ai/generate-document/route.ts
++++ b/carehub-australia/app/api/ai/generate-document/route.ts
+@@ -70,6 +70,74 @@ Create comprehensive handover notes including:
+ 7. Any concerns or issues to monitor
+ 
+ Use clear, objective language appropriate for clinical documentation.`,
++  behaviour_plan: (ctx) => `Create a professional behaviour support plan for an Australian disability support context.
++
++Client:
++- Name: ${ctx.clientName || 'the participant'}
++- Age/Diagnosis: ${ctx.diagnosis || 'not specified'}
++- Presenting behaviours: ${ctx.goals || 'not specified'}
++- Additional context: ${ctx.additionalContext || 'none'}
++
++Create a strengths-based behaviour support plan that includes:
++1. Behaviour description and triggers
++2. Positive support strategies
++3. Proactive environmental adjustments
++4. De-escalation and response steps
++5. Monitoring and review plan
++6. Notes for carers and support workers
++
++Use clear, person-centred language and follow NDIS behaviour support guidance.`,
++  risk_assessment: (ctx) => `Create a professional risk assessment for an Australian care setting.
++
++Client:
++- Name: ${ctx.clientName || 'the participant'}
++- Age/Diagnosis: ${ctx.diagnosis || 'not specified'}
++- Risk context: ${ctx.goals || 'not specified'}
++- Additional context: ${ctx.additionalContext || 'none'}
++
++Create a formal risk assessment document that includes:
++1. Identified risks and likelihood
++2. Impact analysis
++3. Existing controls and supports
++4. Recommended actions to reduce risk
++5. Monitoring and review schedule
++6. Responsibilities and escalation pathways
++
++Use clear, factual language with a focus on safety, dignity, and compliance.`,
++  goal_plan: (ctx) => `Create a structured goal setting plan for an Australian disability support setting.
++
++Client:
++- Name: ${ctx.clientName || 'the participant'}
++- Age/Diagnosis: ${ctx.diagnosis || 'not specified'}
++- Goals/Support needs: ${ctx.goals || 'not specified'}
++- Additional context: ${ctx.additionalContext || 'none'}
++
++Create a goal plan that includes:
++1. Meaningful participant goals
++2. SMART objectives for each goal
++3. Support strategies and responsible persons
++4. Timeframes and milestones
++5. Progress review plans
++6. Participant strengths and preferences
++
++Use person-centred, strengths-based language appropriate for NDIS planning.`,
++  discharge_summary: (ctx) => `Create a professional discharge summary for an Australian care transition.
++
++Client:
++- Name: ${ctx.clientName || 'the participant'}
++- Age/Diagnosis: ${ctx.diagnosis || 'not specified'}
++- Current situation: ${ctx.goals || 'not specified'}
++- Additional context: ${ctx.additionalContext || 'none'}
++
++Create a discharge summary that includes:
++1. Summary of current status and clinical context
++2. Support needs and ongoing care requirements
++3. Medications and health follow-up recommendations
++4. Community and allied health referrals
++5. Transition plan and key contacts
++6. Safety and monitoring instructions
++
++Use clear, concise, professional Australian care sector language.`,
+ }
+ 
+ export async function POST(request: NextRequest) {
