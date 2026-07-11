@@ -1,7 +1,7 @@
-diff --git a/carehub-australia/app/api/ai/generate-document/route.ts b/carehub-australia/app/api/ai/generate-document/route.ts
+diff --git a/app/api/ai/generate-document/route.ts b/carehub-australia/app/api/ai/generate-document/route.ts
 index 835d25e..4733eea 100644
---- a/carehub-australia/app/api/ai/generate-document/route.ts
-+++ b/carehub-australia/app/api/ai/generate-document/route.ts
+--- a/app/api/ai/generate-document/route.ts
++++ b/app/api/ai/generate-document/route.ts
 @@ -70,6 +70,74 @@ Create comprehensive handover notes including:
  7. Any concerns or issues to monitor
  
