@@ -99,11 +99,16 @@ export async function POST(request: NextRequest) {
     }
 
     // Check usage limits based on subscription
-    const { data: profile } = await supabase
+    const { data: profile, error: profileError } = await supabase
       .from('profiles')
       .select('subscription_tier, subscription_status, role')
       .eq('id', user.id)
-      .single()
+      .maybeSingle()
+
+    if (profileError && profileError.code !== 'PGRST116') {
+      console.error('Profile lookup error:', profileError)
+      return NextResponse.json({ error: 'Unable to load your account profile.' }, { status: 500 })
+    }
 
     const isAdmin = profile?.role === 'admin'
 
@@ -188,6 +193,11 @@ export async function POST(request: NextRequest) {
     })
   } catch (error) {
     console.error('Document generation error:', error)
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
+    return NextResponse.json(
+      {
+        error: error instanceof Error ? error.message : 'Internal server error',
+      },
+      { status: 500 }
+    )
   }
 }
