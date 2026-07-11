@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
-import { Eye, EyeOff, Heart, ArrowRight } from 'lucide-react'
+import { Eye, EyeOff, Heart, ArrowRight, LogIn } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Card, CardContent } from '@/components/ui/card'
@@ -55,6 +55,38 @@ export default function LoginPage() {
 
       await supabase.auth.getSession()
       window.location.assign(getSafeNextPath())
+    } catch (err) {
+      setError(
+        err instanceof Error ? err.message : 'Something went wrong. Please try again.'
+      )
+      setLoading(false)
+    }
+  }
+
+  const handleGoogleSignIn = async () => {
+    setLoading(true)
+    setError('')
+
+    try {
+      const { supabase, error: configError } = await createSupabaseBrowserClient()
+
+      if (configError || !supabase) {
+        setError(configError)
+        setLoading(false)
+        return
+      }
+
+      const { error: googleError } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          redirectTo: `${window.location.origin}/auth/callback?next=${encodeURIComponent(getSafeNextPath())}`,
+        },
+      })
+
+      if (googleError) {
+        setError(googleError.message)
+        setLoading(false)
+      }
     } catch (err) {
       setError(
         err instanceof Error ? err.message : 'Something went wrong. Please try again.'
@@ -151,6 +183,28 @@ export default function LoginPage() {
                 )}
               </Button>
             </form>
+
+            <div className="mt-6">
+              <div className="relative mb-6">
+                <div className="absolute inset-0 flex items-center">
+                  <div className="w-full border-t border-gray-300"></div>
+                </div>
+                <div className="relative flex justify-center text-sm">
+                  <span className="px-2 bg-white text-gray-500">Or continue with</span>
+                </div>
+              </div>
+              <Button
+                type="button"
+                variant="outline"
+                size="lg"
+                className="w-full"
+                onClick={handleGoogleSignIn}
+                disabled={loading}
+              >
+                <LogIn className="h-4 w-4 mr-2" />
+                Google
+              </Button>
+            </div>
 
             <div className="mt-6 text-center">
               <p className="text-sm text-gray-500">
