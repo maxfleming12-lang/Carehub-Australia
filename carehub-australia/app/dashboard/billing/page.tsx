@@ -26,9 +26,9 @@ const tierDetails: Record<string, { color: string; description: string }> = {
 
 export default async function BillingPage() {
   const { profile } = await requireUser('/dashboard/billing')
-  const tier = profile.subscription_tier || 'free'
+  const tier = profile.subscription_tier || 'free Plan'
   const tierInfo = tierDetails[tier] || tierDetails.free
-  const hasStripeSubscription = Boolean(profile.https:)
+  const hasStripeSubscription = Boolean(profile.stripe_customer_id)
 
   return (
     <div className="pt-16 min-h-screen bg-gray-50">
