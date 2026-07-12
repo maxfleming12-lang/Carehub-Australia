@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "project": {
+    "merchantId": "acct_1ToM6fI1HEYYRDvo",
+    "merchantDisplayName": "SatAus",
+    "projectId": "project_61V1oE1VeJr31xtHO16Uxk40Pm8SECDeoVgs7nJIOQ9Y",
+    "projectName": "carehub-australia",
+    "initializedAt": "2026-07-12T16:30:13.747Z"
+  },
+  "providers": {},
+  "resources": {}
+}
