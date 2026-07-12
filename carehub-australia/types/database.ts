@@ -36,7 +36,7 @@ export type Database = {
           role?: 'user' | 'admin'
           subscription_tier?: 'free' | 'starter' | 'professional' | 'enterprise' | null
           subscription_status?: 'active' | 'inactive' | 'trialing' | 'cancelled' | null
-          stripe_customer_id?: string | null
+          stripe_customer_id?:https://dashboard.stripe.com/acct_1ToM6fI1HEYYRDvo
           stripe_subscription_id?: string | null
           organization?: string | null
           phone?: string | null
