@@ -52,8 +52,9 @@ export function ContactForm() {
     <form onSubmit={handleSubmit} className="space-y-4">
       <div className="grid sm:grid-cols-2 gap-4">
         <div>
-          <label className="text-sm font-medium text-gray-700 block mb-1.5">First Name *</label>
+          <label htmlFor="contact-first-name" className="text-sm font-medium text-gray-700 block mb-1.5">First Name *</label>
           <Input
+            id="contact-first-name"
             placeholder="Jane"
             value={formData.firstName}
             onChange={(event) => updateField('firstName', event.target.value)}
@@ -61,8 +62,9 @@ export function ContactForm() {
           />
         </div>
         <div>
-          <label className="text-sm font-medium text-gray-700 block mb-1.5">Last Name *</label>
+          <label htmlFor="contact-last-name" className="text-sm font-medium text-gray-700 block mb-1.5">Last Name *</label>
           <Input
+            id="contact-last-name"
             placeholder="Smith"
             value={formData.lastName}
             onChange={(event) => updateField('lastName', event.target.value)}
@@ -71,8 +73,9 @@ export function ContactForm() {
         </div>
       </div>
       <div>
-        <label className="text-sm font-medium text-gray-700 block mb-1.5">Email Address *</label>
+        <label htmlFor="contact-email" className="text-sm font-medium text-gray-700 block mb-1.5">Email Address *</label>
         <Input
+          id="contact-email"
           type="email"
           placeholder="jane@organisation.com.au"
           value={formData.email}
@@ -81,8 +84,9 @@ export function ContactForm() {
         />
       </div>
       <div>
-        <label className="text-sm font-medium text-gray-700 block mb-1.5">Phone (optional)</label>
+        <label htmlFor="contact-phone" className="text-sm font-medium text-gray-700 block mb-1.5">Phone (optional)</label>
         <Input
+          id="contact-phone"
           type="tel"
           placeholder="0400 000 000"
           value={formData.phone}
@@ -90,16 +94,18 @@ export function ContactForm() {
         />
       </div>
       <div>
-        <label className="text-sm font-medium text-gray-700 block mb-1.5">Organisation</label>
+        <label htmlFor="contact-organisation" className="text-sm font-medium text-gray-700 block mb-1.5">Organisation</label>
         <Input
+          id="contact-organisation"
           placeholder="Your organisation name"
           value={formData.organisation}
           onChange={(event) => updateField('organisation', event.target.value)}
         />
       </div>
       <div>
-        <label className="text-sm font-medium text-gray-700 block mb-1.5">Subject *</label>
+        <label htmlFor="contact-subject" className="text-sm font-medium text-gray-700 block mb-1.5">Subject *</label>
         <select
+          id="contact-subject"
           className="w-full h-10 rounded-lg border border-gray-300 px-3 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white"
           value={formData.subject}
           onChange={(event) => updateField('subject', event.target.value)}
@@ -112,8 +118,9 @@ export function ContactForm() {
         </select>
       </div>
       <div>
-        <label className="text-sm font-medium text-gray-700 block mb-1.5">Message *</label>
+        <label htmlFor="contact-message" className="text-sm font-medium text-gray-700 block mb-1.5">Message *</label>
         <textarea
+          id="contact-message"
           className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500 resize-none"
           rows={5}
           placeholder="How can we help you? Please provide as much detail as possible."

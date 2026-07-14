@@ -42,6 +42,7 @@ export async function generateMetadata({ params }: ResourcePageProps): Promise<M
   return {
     title: resource.title,
     description: resource.description,
+    alternates: { canonical: `/resources/${resource.id}` },
   }
 }
 

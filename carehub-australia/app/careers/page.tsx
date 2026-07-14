@@ -1,7 +1,13 @@
 import type { Metadata } from 'next'
+import { pageMetadata } from '@/lib/metadata'
 import { ComingSoon } from '@/components/ComingSoon'
 
-export const metadata: Metadata = { title: 'Careers' }
+export const metadata: Metadata = pageMetadata({
+  title: "Careers",
+  description:
+    "Join the Scribe & Thrive Australia team and help build tools for the Australian care community.",
+  path: "/careers",
+})
 
 export default function CareersPage() {
   return (

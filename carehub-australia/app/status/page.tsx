@@ -1,7 +1,13 @@
 import type { Metadata } from 'next'
+import { pageMetadata } from '@/lib/metadata'
 import { CheckCircle } from 'lucide-react'
 
-export const metadata: Metadata = { title: 'System Status' }
+export const metadata: Metadata = pageMetadata({
+  title: "System Status",
+  description:
+    "Live operational status of the Scribe & Thrive Australia platform.",
+  path: "/status",
+})
 
 export default function StatusPage() {
   return (

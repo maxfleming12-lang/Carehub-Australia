@@ -1,14 +1,16 @@
 import type { Metadata } from 'next'
+import { pageMetadata } from '@/lib/metadata'
 import { Mail, Phone, MapPin, Clock, MessageSquare } from 'lucide-react'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { ContactForm } from './ContactForm'
 
-export const metadata: Metadata = {
-  title: 'Contact Us',
+export const metadata: Metadata = pageMetadata({
+  title: "Contact Us",
   description:
-    'Get in touch with the Scribe & Thrive Australia team. We\'re here to help care professionals across Australia.',
-}
+    "Get in touch with the Scribe & Thrive Australia team. We're here to help care professionals across Australia.",
+  path: "/contact",
+})
 
 const contactMethods = [
   {

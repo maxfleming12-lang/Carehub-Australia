@@ -1,7 +1,13 @@
 import type { Metadata } from 'next'
+import { pageMetadata } from '@/lib/metadata'
 import { ComingSoon } from '@/components/ComingSoon'
 
-export const metadata: Metadata = { title: 'Community Forum' }
+export const metadata: Metadata = pageMetadata({
+  title: "Community Forum",
+  description:
+    "A community space for Australian care workers to share experiences, tips, and resources.",
+  path: "/community",
+})
 
 export default function CommunityPage() {
   return (

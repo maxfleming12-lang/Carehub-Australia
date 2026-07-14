@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import { Menu, X, Heart, ChevronDown, LayoutDashboard, LogOut, User } from 'lucide-react'
-import { Button } from '@/components/ui/button'
+import { Button, buttonVariants } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 import { createSupabaseBrowserClient } from '@/lib/supabase-browser'
 import type { User as SupabaseUser } from '@supabase/supabase-js'
@@ -234,17 +234,17 @@ export function Navbar() {
               </div>
             ) : (
               <>
-                <Link href="/auth/login">
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className={solid ? undefined : 'text-white hover:text-white hover:bg-white/10'}
-                  >
-                    Sign In
-                  </Button>
+                <Link
+                  href="/auth/login"
+                  className={cn(
+                    buttonVariants({ variant: 'ghost', size: 'sm' }),
+                    !solid && 'text-white hover:text-white hover:bg-white/10'
+                  )}
+                >
+                  Sign In
                 </Link>
-                <Link href="/auth/register">
-                  <Button variant="primary" size="sm">Get Started Free</Button>
+                <Link href="/auth/register" className={buttonVariants({ variant: 'primary', size: 'sm' })}>
+                  Get Started Free
                 </Link>
               </>
             )}
@@ -315,11 +315,13 @@ export function Navbar() {
                       <p className="text-xs text-gray-500">{user.email}</p>
                     </div>
                   </div>
-                  <Link href="/dashboard" onClick={() => setMobileOpen(false)}>
-                    <Button variant="outline" className="w-full justify-start gap-2">
-                      <LayoutDashboard className="h-4 w-4" />
-                      Dashboard
-                    </Button>
+                  <Link
+                    href="/dashboard"
+                    onClick={() => setMobileOpen(false)}
+                    className={cn(buttonVariants({ variant: 'outline' }), 'w-full justify-start gap-2')}
+                  >
+                    <LayoutDashboard className="h-4 w-4" />
+                    Dashboard
                   </Link>
                   <Button
                     variant="outline"
@@ -332,11 +334,19 @@ export function Navbar() {
                 </>
               ) : (
                 <>
-                  <Link href="/auth/login" onClick={() => setMobileOpen(false)}>
-                    <Button variant="outline" className="w-full">Sign In</Button>
+                  <Link
+                    href="/auth/login"
+                    onClick={() => setMobileOpen(false)}
+                    className={cn(buttonVariants({ variant: 'outline' }), 'w-full')}
+                  >
+                    Sign In
                   </Link>
-                  <Link href="/auth/register" onClick={() => setMobileOpen(false)}>
-                    <Button variant="primary" className="w-full">Get Started Free</Button>
+                  <Link
+                    href="/auth/register"
+                    onClick={() => setMobileOpen(false)}
+                    className={cn(buttonVariants({ variant: 'primary' }), 'w-full')}
+                  >
+                    Get Started Free
                   </Link>
                 </>
               )}

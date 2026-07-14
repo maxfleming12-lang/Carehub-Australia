@@ -1,13 +1,16 @@
 import type { Metadata } from 'next'
+import { pageMetadata } from '@/lib/metadata'
 import { Heart, Shield, Users, Award } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 
-export const metadata: Metadata = {
-  title: 'About Us',
-  description: 'Learn about Scribe & Thrive Australia — built by care workers, for care workers.',
-}
+export const metadata: Metadata = pageMetadata({
+  title: "About Us",
+  description:
+    "Learn about Scribe & Thrive Australia — built by care workers, for care workers.",
+  path: "/about",
+})
 
 const values = [
   {

@@ -1,10 +1,13 @@
 import type { Metadata } from 'next'
+import { pageMetadata } from '@/lib/metadata'
 import { Badge } from '@/components/ui/badge'
 
-export const metadata: Metadata = {
-  title: 'Privacy Policy',
-  description: 'How Scribe & Thrive Australia collects, uses, and protects your personal information.',
-}
+export const metadata: Metadata = pageMetadata({
+  title: "Privacy Policy",
+  description:
+    "How Scribe & Thrive Australia collects, uses, and protects your personal information.",
+  path: "/privacy",
+})
 
 const lastUpdated = '1 July 2026'
 

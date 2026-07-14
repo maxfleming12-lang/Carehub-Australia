@@ -1,10 +1,13 @@
 import type { Metadata } from 'next'
+import { pageMetadata } from '@/lib/metadata'
 import { Badge } from '@/components/ui/badge'
 
-export const metadata: Metadata = {
-  title: 'Accessibility',
-  description: 'Scribe & Thrive Australia accessibility statement.',
-}
+export const metadata: Metadata = pageMetadata({
+  title: "Accessibility",
+  description:
+    "Scribe & Thrive Australia accessibility statement.",
+  path: "/accessibility",
+})
 
 export default function AccessibilityPage() {
   return (

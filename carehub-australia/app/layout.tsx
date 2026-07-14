@@ -3,6 +3,7 @@ import "./globals.css";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { SITE_URL } from "@/lib/site-url";
 
 export const metadata: Metadata = {
   title: {
@@ -23,9 +24,7 @@ export const metadata: Metadata = {
     "burnout assessment",
   ],
   authors: [{ name: "Scribe & Thrive Australia" }],
-  metadataBase: new URL(
-    process.env.NEXT_PUBLIC_APP_URL || "https://sataus.net"
-  ),
+  metadataBase: new URL(SITE_URL),
   openGraph: {
     type: "website",
     locale: "en_AU",
@@ -46,6 +45,38 @@ export const metadata: Metadata = {
   },
 };
 
+const BASE_URL = SITE_URL;
+
+// Organization + WebSite structured data for search engines.
+const structuredData = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": `${BASE_URL}/#organization`,
+      name: "Scribe & Thrive Australia",
+      legalName: "Scribe & Thrive Australia Pty Ltd",
+      url: BASE_URL,
+      email: "hello@sataus.net",
+      telephone: "+61 451 381 843",
+      address: {
+        "@type": "PostalAddress",
+        addressLocality: "Sydney",
+        addressRegion: "NSW",
+        addressCountry: "AU",
+      },
+    },
+    {
+      "@type": "WebSite",
+      "@id": `${BASE_URL}/#website`,
+      name: "Scribe & Thrive Australia",
+      url: BASE_URL,
+      publisher: { "@id": `${BASE_URL}/#organization` },
+      inLanguage: "en-AU",
+    },
+  ],
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -54,10 +85,20 @@ export default function RootLayout({
   return (
     <html lang="en-AU">
       <body className="antialiased bg-white">
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[100] focus:rounded-lg focus:bg-white focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-teal-700 focus:shadow-lg"
+        >
+          Skip to main content
+        </a>
         <Navbar />
-        <main>{children}</main>
+        <main id="main-content">{children}</main>
         <Footer />
         <SpeedInsights />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+        />
       </body>
     </html>
   );

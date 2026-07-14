@@ -1,10 +1,13 @@
 import type { Metadata } from 'next'
+import { pageMetadata } from '@/lib/metadata'
 import { Badge } from '@/components/ui/badge'
 
-export const metadata: Metadata = {
-  title: 'Terms of Service',
-  description: 'Terms and conditions for using Scribe & Thrive Australia.',
-}
+export const metadata: Metadata = pageMetadata({
+  title: "Terms of Service",
+  description:
+    "Terms and conditions for using Scribe & Thrive Australia.",
+  path: "/terms",
+})
 
 const lastUpdated = '1 July 2026'
 

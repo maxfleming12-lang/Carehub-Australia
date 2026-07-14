@@ -1,7 +1,13 @@
 import type { Metadata } from 'next'
+import { pageMetadata } from '@/lib/metadata'
 import { ComingSoon } from '@/components/ComingSoon'
 
-export const metadata: Metadata = { title: 'NDIS Resources' }
+export const metadata: Metadata = pageMetadata({
+  title: "NDIS Resources",
+  description:
+    "NDIS-specific guides, templates, and updates for Australian disability support professionals.",
+  path: "/ndis",
+})
 
 export default function NdisPage() {
   return (

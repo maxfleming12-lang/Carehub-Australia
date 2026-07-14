@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { Heart, Phone, Mail, MapPin, Globe, Rss } from 'lucide-react'
+import { Heart, Phone, Mail, MapPin } from 'lucide-react'
 
 const footerLinks = {
   platform: [
@@ -29,13 +29,6 @@ const footerLinks = {
     { name: 'NDIS Resources', href: '/ndis' },
   ],
 }
-
-const socialLinks = [
-  { icon: Globe, href: '#', label: 'Website' },
-  { icon: Rss, href: '#', label: 'LinkedIn' },
-  { icon: Globe, href: '#', label: 'Twitter/X' },
-  { icon: Heart, href: '#', label: 'Instagram' },
-]
 
 export function Footer() {
   return (
@@ -95,18 +88,6 @@ export function Footer() {
                 <MapPin className="h-4 w-4 text-teal-400 flex-shrink-0" />
                 <span>Sydney, NSW, Australia</span>
               </div>
-            </div>
-            <div className="flex gap-3 mt-6">
-              {socialLinks.map(({ icon: Icon, href, label }) => (
-                <a
-                  key={label}
-                  href={href}
-                  aria-label={label}
-                  className="flex h-9 w-9 items-center justify-center rounded-lg bg-gray-800 hover:bg-teal-600 transition-colors"
-                >
-                  <Icon className="h-4 w-4" />
-                </a>
-              ))}
             </div>
           </div>
 

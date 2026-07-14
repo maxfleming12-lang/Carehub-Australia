@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { pageMetadata } from '@/lib/metadata'
 import Link from 'next/link'
 import { CheckCircle, X, ArrowRight, HelpCircle, Zap } from 'lucide-react'
 import { Button } from '@/components/ui/button'
@@ -6,11 +7,12 @@ import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { PlanButton } from '@/components/pricing/plan-button'
 
-export const metadata: Metadata = {
-  title: 'Pricing',
+export const metadata: Metadata = pageMetadata({
+  title: "Pricing",
   description:
-    'Affordable pricing plans for Australian care professionals. Start with a 14-day free trial. No credit card required.',
-}
+    "Affordable pricing plans for Australian care professionals. Start with a 14-day free trial. No credit card required.",
+  path: "/pricing",
+})
 
 const plans = [
   {

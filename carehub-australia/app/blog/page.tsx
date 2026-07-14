@@ -1,14 +1,17 @@
 import type { Metadata } from 'next'
+import { pageMetadata } from '@/lib/metadata'
 import Link from 'next/link'
 import { ArrowRight, BookOpen } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent } from '@/components/ui/card'
 import { createSupabaseServerClient } from '@/lib/supabase-server'
 
-export const metadata: Metadata = {
-  title: 'Blog',
-  description: 'Scribe & Thrive Australia care sector updates and resources.',
-}
+export const metadata: Metadata = pageMetadata({
+  title: "Blog",
+  description:
+    "Care sector updates, guides, and resources from Scribe & Thrive Australia.",
+  path: "/blog",
+})
 
 function formatDate(value: string) {
   return new Date(value).toLocaleDateString('en-AU', {

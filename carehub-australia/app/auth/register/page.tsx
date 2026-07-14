@@ -191,10 +191,11 @@ export default function RegisterPage() {
               )}
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
-                  <label className="text-sm font-medium text-gray-700 block mb-1.5">
+                  <label htmlFor="register-full-name" className="text-sm font-medium text-gray-700 block mb-1.5">
                     Full Name *
                   </label>
                   <Input
+                    id="register-full-name"
                     placeholder="Your full name"
                     value={formData.fullName}
                     onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
@@ -203,10 +204,11 @@ export default function RegisterPage() {
                 </div>
 
                 <div>
-                  <label className="text-sm font-medium text-gray-700 block mb-1.5">
+                  <label htmlFor="register-email" className="text-sm font-medium text-gray-700 block mb-1.5">
                     Email Address *
                   </label>
                   <Input
+                    id="register-email"
                     type="email"
                     placeholder="you@organisation.com.au"
                     value={formData.email}
@@ -216,11 +218,12 @@ export default function RegisterPage() {
                 </div>
 
                 <div>
-                  <label className="text-sm font-medium text-gray-700 block mb-1.5">
+                  <label htmlFor="register-password" className="text-sm font-medium text-gray-700 block mb-1.5">
                     Password *
                   </label>
                   <div className="relative">
                     <Input
+                    id="register-password"
                       type={showPassword ? 'text' : 'password'}
                       placeholder="Minimum 8 characters"
                       value={formData.password}
@@ -232,6 +235,7 @@ export default function RegisterPage() {
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
+                      aria-label={showPassword ? 'Hide password' : 'Show password'}
                       className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
                     >
                       {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
@@ -240,10 +244,11 @@ export default function RegisterPage() {
                 </div>
 
                 <div>
-                  <label className="text-sm font-medium text-gray-700 block mb-1.5">
+                  <label htmlFor="register-organisation" className="text-sm font-medium text-gray-700 block mb-1.5">
                     Organisation (optional)
                   </label>
                   <Input
+                    id="register-organisation"
                     placeholder="Your workplace or organisation"
                     value={formData.organisation}
                     onChange={(e) => setFormData({ ...formData, organisation: e.target.value })}
@@ -252,8 +257,9 @@ export default function RegisterPage() {
 
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <label className="text-sm font-medium text-gray-700 block mb-1.5">Role</label>
+                    <label htmlFor="register-role" className="text-sm font-medium text-gray-700 block mb-1.5">Role</label>
                     <select
+                    id="register-role"
                       className="w-full h-10 rounded-lg border border-gray-300 px-3 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white"
                       value={formData.role}
                       onChange={(e) => setFormData({ ...formData, role: e.target.value })}
@@ -269,8 +275,9 @@ export default function RegisterPage() {
                     </select>
                   </div>
                   <div>
-                    <label className="text-sm font-medium text-gray-700 block mb-1.5">State</label>
+                    <label htmlFor="register-state" className="text-sm font-medium text-gray-700 block mb-1.5">State</label>
                     <select
+                    id="register-state"
                       className="w-full h-10 rounded-lg border border-gray-300 px-3 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white"
                       value={formData.state}
                       onChange={(e) => setFormData({ ...formData, state: e.target.value })}

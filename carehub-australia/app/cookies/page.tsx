@@ -1,10 +1,13 @@
 import type { Metadata } from 'next'
+import { pageMetadata } from '@/lib/metadata'
 import { Badge } from '@/components/ui/badge'
 
-export const metadata: Metadata = {
-  title: 'Cookie Policy',
-  description: 'How Scribe & Thrive Australia uses cookies.',
-}
+export const metadata: Metadata = pageMetadata({
+  title: "Cookie Policy",
+  description:
+    "How Scribe & Thrive Australia uses cookies.",
+  path: "/cookies",
+})
 
 export default function CookiesPage() {
   return (

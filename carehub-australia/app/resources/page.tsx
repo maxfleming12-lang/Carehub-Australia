@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { pageMetadata } from '@/lib/metadata'
 import Link from 'next/link'
 import {
   AlertCircle,
@@ -16,11 +17,12 @@ import { Button } from '@/components/ui/button'
 import { createSupabaseServerClient } from '@/lib/supabase-server'
 import type { Database } from '@/types/database'
 
-export const metadata: Metadata = {
-  title: 'Resources',
+export const metadata: Metadata = pageMetadata({
+  title: "Resources",
   description:
-    'Download published resources for Australian care workers. Policy templates, checklists, guides and toolkits.',
-}
+    "Download published resources for Australian care workers. Policy templates, checklists, guides and toolkits.",
+  path: "/resources",
+})
 
 type Resource = Pick<
   Database['public']['Tables']['resources']['Row'],

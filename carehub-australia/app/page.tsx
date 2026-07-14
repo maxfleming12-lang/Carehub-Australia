@@ -14,9 +14,19 @@ import {
   Zap,
   TrendingUp,
 } from 'lucide-react'
-import { Button } from '@/components/ui/button'
+import type { Metadata } from 'next'
+import { buttonVariants } from '@/components/ui/button'
+import { cn } from '@/lib/utils'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
+import { pageMetadata } from '@/lib/metadata'
+
+export const metadata: Metadata = pageMetadata({
+  title: 'Scribe & Thrive Australia | Professional Care Management Platform',
+  description:
+    'The comprehensive SaaS platform for Australian care workers, disability support professionals, and aged care organisations. AI-powered tools, training, and resources.',
+  path: '/',
+})
 
 const stats = [
   { label: 'Australian Data Storage', value: 'AU' },
@@ -148,14 +158,18 @@ export default function HomePage() {
                 The all-in-one platform for NDIS and aged care professionals. Generate documents with AI, complete burnout assessments, access training, and download essential resources.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 mb-10">
-                <Link href="/auth/register">
-                  <Button variant="primary" size="xl" className="w-full sm:w-auto">
-                    Start Free 14-Day Trial
-                    <ArrowRight className="h-5 w-5" />
-                  </Button>
+                <Link
+                  href="/auth/register"
+                  className={cn(buttonVariants({ variant: 'primary', size: 'xl' }), 'w-full sm:w-auto')}
+                >
+                  Start Free 14-Day Trial
+                  <ArrowRight className="h-5 w-5" />
                 </Link>
-                <Link href="/pricing">
-                  <Button variant="white" size="xl" className="w-full sm:w-auto">View Pricing</Button>
+                <Link
+                  href="/pricing"
+                  className={cn(buttonVariants({ variant: 'white', size: 'xl' }), 'w-full sm:w-auto')}
+                >
+                  View Pricing
                 </Link>
               </div>
               <div className="flex flex-wrap items-center gap-6 text-sm text-gray-400">
@@ -314,8 +328,11 @@ export default function HomePage() {
                       </li>
                     ))}
                   </ul>
-                  <Link href="/auth/register">
-                    <Button variant={plan.popular ? 'primary' : 'outline'} className="w-full">Start Free Trial</Button>
+                  <Link
+                    href="/auth/register"
+                    className={cn(buttonVariants({ variant: plan.popular ? 'primary' : 'outline' }), 'w-full')}
+                  >
+                    Start Free Trial
                   </Link>
                 </CardContent>
               </Card>
@@ -336,11 +353,17 @@ export default function HomePage() {
             Create a secure workspace for care documentation, training, and resources without relying on pre-filled client data.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="/auth/register">
-              <Button size="xl" variant="white">Start Free 14-Day Trial <ArrowRight className="h-5 w-5" /></Button>
+            <Link href="/auth/register" className={buttonVariants({ variant: 'white', size: 'xl' })}>
+              Start Free 14-Day Trial <ArrowRight className="h-5 w-5" />
             </Link>
-            <Link href="/contact">
-              <Button size="xl" variant="outline" className="border-2 border-white text-white hover:bg-white/10">Talk to Our Team</Button>
+            <Link
+              href="/contact"
+              className={cn(
+                buttonVariants({ variant: 'outline', size: 'xl' }),
+                'border-2 border-white text-white hover:bg-white/10'
+              )}
+            >
+              Talk to Our Team
             </Link>
           </div>
           <p className="text-teal-200 text-sm mt-6">No credit card required · Cancel anytime · Australian-based support</p>

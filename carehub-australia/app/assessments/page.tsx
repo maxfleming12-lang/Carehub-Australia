@@ -1,15 +1,17 @@
 import type { Metadata } from 'next'
+import { pageMetadata } from '@/lib/metadata'
 import Link from 'next/link'
 import { ArrowRight, Clock, ClipboardCheck, ShieldCheck } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 
-export const metadata: Metadata = {
-  title: 'Assessments',
+export const metadata: Metadata = pageMetadata({
+  title: "Assessments",
   description:
-    'Evidence-based assessments for Australian care workers. Burnout assessment, wellbeing checks, and more.',
-}
+    "Evidence-based assessments for Australian care workers. Burnout assessment, wellbeing checks, and more.",
+  path: "/assessments",
+})
 
 export default function AssessmentsPage() {
   return (
