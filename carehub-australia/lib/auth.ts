@@ -8,6 +8,7 @@ export type UserProfile = {
   role: 'user' | 'admin'
   subscription_tier: 'free' | 'starter' | 'professional' | 'enterprise' | null
   subscription_status: 'active' | 'inactive' | 'trialing' | 'cancelled' | null
+  stripe_customer_id: string | null
   organization: string | null
   state: string | null
 }
@@ -24,7 +25,7 @@ export async function requireUser(nextPath = '/dashboard') {
 
   const { data: profile } = await supabase
     .from('profiles')
-    .select('id, full_name, email, role, subscription_tier, subscription_status, organization, state')
+    .select('id, full_name, email, role, subscription_tier, subscription_status, stripe_customer_id, organization, state')
     .eq('id', user.id)
     .single()
 
@@ -38,6 +39,7 @@ export async function requireUser(nextPath = '/dashboard') {
         role: 'user',
         subscription_tier: 'free',
         subscription_status: null,
+        stripe_customer_id: null,
         organization: null,
         state: null,
       } satisfies UserProfile,
