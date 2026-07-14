@@ -95,11 +95,15 @@ export function Navbar() {
   const displayName = user?.user_metadata?.full_name || user?.email?.split('@')[0] || 'Account'
   const initials = displayName.slice(0, 2).toUpperCase()
 
+  // Pages open with dark hero sections, so the transparent navbar needs light
+  // text until it gains its white background (on scroll or open mobile menu).
+  const solid = scrolled || mobileOpen
+
   return (
     <nav
       className={cn(
         'fixed top-0 z-50 w-full transition-all duration-300',
-        scrolled ? 'bg-white/95 backdrop-blur-md shadow-sm' : 'bg-transparent'
+        solid ? 'bg-white/95 backdrop-blur-md shadow-sm' : 'bg-transparent'
       )}
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -110,8 +114,8 @@ export function Navbar() {
               <Heart className="h-5 w-5 text-white" />
             </div>
             <div className="flex flex-col leading-none">
-              <span className="text-lg font-bold text-gray-900">Scribe & Thrive</span>
-              <span className="text-xs text-teal-600 font-medium">Australia</span>
+              <span className={cn('text-lg font-bold', solid ? 'text-gray-900' : 'text-white')}>Scribe & Thrive</span>
+              <span className={cn('text-xs font-medium', solid ? 'text-teal-600' : 'text-teal-300')}>Australia</span>
             </div>
           </Link>
 
@@ -125,7 +129,14 @@ export function Navbar() {
                   onMouseEnter={() => setActiveDropdown(item.name)}
                   onMouseLeave={() => setActiveDropdown(null)}
                 >
-                  <button className="flex items-center gap-1 px-3 py-2 text-sm font-medium text-gray-700 hover:text-teal-600 rounded-lg hover:bg-teal-50 transition-colors">
+                  <button
+                    className={cn(
+                      'flex items-center gap-1 px-3 py-2 text-sm font-medium rounded-lg transition-colors',
+                      solid
+                        ? 'text-gray-700 hover:text-teal-600 hover:bg-teal-50'
+                        : 'text-gray-100 hover:text-white hover:bg-white/10'
+                    )}
+                  >
                     {item.name}
                     <ChevronDown className={cn('h-4 w-4 transition-transform', activeDropdown === item.name && 'rotate-180')} />
                   </button>
@@ -151,8 +162,12 @@ export function Navbar() {
                   className={cn(
                     'px-3 py-2 text-sm font-medium rounded-lg transition-colors',
                     pathname === item.href
-                      ? 'text-teal-600 bg-teal-50'
-                      : 'text-gray-700 hover:text-teal-600 hover:bg-teal-50'
+                      ? solid
+                        ? 'text-teal-600 bg-teal-50'
+                        : 'text-white bg-white/15'
+                      : solid
+                        ? 'text-gray-700 hover:text-teal-600 hover:bg-teal-50'
+                        : 'text-gray-100 hover:text-white hover:bg-white/10'
                   )}
                 >
                   {item.name}
@@ -164,18 +179,21 @@ export function Navbar() {
           {/* Auth buttons */}
           <div className="hidden lg:flex items-center gap-3">
             {authLoading ? (
-              <div className="h-8 w-24 rounded-lg bg-gray-100 animate-pulse" />
+              <div className={cn('h-8 w-24 rounded-lg animate-pulse', solid ? 'bg-gray-100' : 'bg-white/20')} />
             ) : user ? (
               <div className="relative">
                 <button
                   onClick={(e) => { e.stopPropagation(); setUserDropdownOpen(!userDropdownOpen) }}
-                  className="flex items-center gap-2 px-3 py-1.5 rounded-lg hover:bg-gray-100 transition-colors"
+                  className={cn(
+                    'flex items-center gap-2 px-3 py-1.5 rounded-lg transition-colors',
+                    solid ? 'hover:bg-gray-100' : 'hover:bg-white/10'
+                  )}
                 >
                   <div className="h-8 w-8 rounded-full bg-gradient-to-br from-teal-500 to-blue-500 flex items-center justify-center text-white text-xs font-bold">
                     {initials}
                   </div>
-                  <span className="text-sm font-medium text-gray-700 max-w-[120px] truncate">{displayName}</span>
-                  <ChevronDown className={cn('h-4 w-4 text-gray-400 transition-transform', userDropdownOpen && 'rotate-180')} />
+                  <span className={cn('text-sm font-medium max-w-[120px] truncate', solid ? 'text-gray-700' : 'text-white')}>{displayName}</span>
+                  <ChevronDown className={cn('h-4 w-4 transition-transform', solid ? 'text-gray-400' : 'text-gray-200', userDropdownOpen && 'rotate-180')} />
                 </button>
 
                 {userDropdownOpen && (
@@ -214,7 +232,13 @@ export function Navbar() {
             ) : (
               <>
                 <Link href="/auth/login">
-                  <Button variant="ghost" size="sm">Sign In</Button>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className={solid ? undefined : 'text-white hover:text-white hover:bg-white/10'}
+                  >
+                    Sign In
+                  </Button>
                 </Link>
                 <Link href="/auth/register">
                   <Button variant="primary" size="sm">Get Started Free</Button>
@@ -225,7 +249,10 @@ export function Navbar() {
 
           {/* Mobile menu button */}
           <button
-            className="lg:hidden p-2 rounded-lg text-gray-700 hover:bg-gray-100"
+            className={cn(
+              'lg:hidden p-2 rounded-lg',
+              solid ? 'text-gray-700 hover:bg-gray-100' : 'text-white hover:bg-white/10'
+            )}
             onClick={() => setMobileOpen(!mobileOpen)}
             aria-label="Toggle menu"
           >
