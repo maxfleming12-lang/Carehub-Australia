@@ -95,15 +95,18 @@ export function Navbar() {
   const displayName = user?.user_metadata?.full_name || user?.email?.split('@')[0] || 'Account'
   const initials = displayName.slice(0, 2).toUpperCase()
 
-  // Pages open with dark hero sections, so the transparent navbar needs light
-  // text until it gains its white background (on scroll or open mobile menu).
+  // At the top of the page the navbar sits over dark hero sections on some
+  // routes and the plain white body on others (pages padded with pt-16), so a
+  // transparent bar can't be readable everywhere. Give the unscrolled navbar
+  // its own dark translucent background with light text; once the user
+  // scrolls (or opens the mobile menu) it switches to white with dark text.
   const solid = scrolled || mobileOpen
 
   return (
     <nav
       className={cn(
         'fixed top-0 z-50 w-full transition-all duration-300',
-        solid ? 'bg-white/95 backdrop-blur-md shadow-sm' : 'bg-transparent'
+        solid ? 'bg-white/95 backdrop-blur-md shadow-sm' : 'bg-gray-900/70 backdrop-blur-md'
       )}
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
