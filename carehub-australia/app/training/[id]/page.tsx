@@ -37,11 +37,16 @@ type ProfileAccess = {
   subscription_tier: 'free' | 'starter' | 'professional' | 'enterprise' | null
 } | null
 
+type CourseLesson = {
+  title: string
+  content?: string
+}
+
 type CourseModule = {
   title: string
   duration?: string
   summary?: string
-  lessons: string[]
+  lessons: CourseLesson[]
 }
 
 function asRecord(value: Json): Record<string, Json | undefined> | null {
@@ -62,6 +67,30 @@ function asStringArray(value: Json | undefined) {
     : []
 }
 
+// Lessons were originally stored as plain title strings; newer content stores
+// them as { title, content } objects. Support both shapes.
+function asLessons(value: Json | undefined): CourseLesson[] {
+  if (!Array.isArray(value)) {
+    return []
+  }
+
+  return value.flatMap((item) => {
+    if (typeof item === 'string') {
+      return [{ title: item }]
+    }
+
+    const lesson = asRecord(item)
+    const title = asString(lesson?.title)
+
+    if (!title) {
+      return []
+    }
+
+    const content = asString(lesson?.content)
+    return [{ title, content: content || undefined }]
+  })
+}
+
 function asModules(value: Json | undefined): CourseModule[] {
   if (!Array.isArray(value)) {
     return []
@@ -74,7 +103,7 @@ function asModules(value: Json | undefined): CourseModule[] {
       title: asString(courseModule?.title) || `Module ${index + 1}`,
       duration: asString(courseModule?.duration),
       summary: asString(courseModule?.summary),
-      lessons: asStringArray(courseModule?.lessons),
+      lessons: asLessons(courseModule?.lessons),
     }
   })
 }
@@ -259,14 +288,46 @@ export default async function TrainingCoursePage({ params }: CoursePageProps) {
                       <p className="text-sm text-gray-600 leading-relaxed mb-4">{module.summary}</p>
                     )}
                     {module.lessons.length > 0 && (
-                      <ul className="space-y-2">
-                        {module.lessons.map((lesson) => (
-                          <li key={lesson} className="flex items-start gap-2 text-sm text-gray-600">
-                            <CheckCircle className="h-4 w-4 text-teal-500 mt-0.5 flex-shrink-0" />
-                            <span>{lesson}</span>
-                          </li>
-                        ))}
-                      </ul>
+                      <div className="space-y-2">
+                        {module.lessons.map((lesson, lessonIndex) =>
+                          lesson.content ? (
+                            <details
+                              key={`${lesson.title}-${lessonIndex}`}
+                              className="group rounded-lg border border-gray-200 bg-gray-50/50 open:bg-white"
+                              open={index === 0 && lessonIndex === 0}
+                            >
+                              <summary className="flex cursor-pointer items-center gap-2 px-4 py-3 text-sm font-semibold text-gray-800 hover:text-teal-700 [&::-webkit-details-marker]:hidden">
+                                <BookOpen className="h-4 w-4 text-teal-500 flex-shrink-0" />
+                                <span className="flex-1">{lesson.title}</span>
+                                <span className="text-xs font-normal text-gray-400 group-open:hidden">Read lesson</span>
+                              </summary>
+                              <div className="border-t border-gray-100 px-4 py-4 space-y-3">
+                                {lesson.content.split(/\n\n+/).map((paragraph, paragraphIndex) =>
+                                  paragraph.trim().startsWith('- ') ? (
+                                    <ul key={paragraphIndex} className="space-y-1.5">
+                                      {paragraph.split('\n').map((line, lineIndex) => (
+                                        <li key={lineIndex} className="flex items-start gap-2 text-sm text-gray-600">
+                                          <CheckCircle className="h-4 w-4 text-teal-500 mt-0.5 flex-shrink-0" />
+                                          <span>{line.replace(/^- /, '')}</span>
+                                        </li>
+                                      ))}
+                                    </ul>
+                                  ) : (
+                                    <p key={paragraphIndex} className="text-sm text-gray-600 leading-relaxed">
+                                      {paragraph}
+                                    </p>
+                                  )
+                                )}
+                              </div>
+                            </details>
+                          ) : (
+                            <div key={`${lesson.title}-${lessonIndex}`} className="flex items-start gap-2 text-sm text-gray-600">
+                              <CheckCircle className="h-4 w-4 text-teal-500 mt-0.5 flex-shrink-0" />
+                              <span>{lesson.title}</span>
+                            </div>
+                          )
+                        )}
+                      </div>
                     )}
                   </CardContent>
                 </Card>
